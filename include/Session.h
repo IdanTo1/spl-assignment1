@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <string>
 #include "Action.h"
+#include "User.h"
+#include "Watchable.h"
 
 class User;
 class Watchable;
