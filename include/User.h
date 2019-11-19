@@ -14,6 +14,7 @@ public:
     virtual Watchable* getRecommendation(Session& s) = 0;
     std::string getName() const;
     std::vector<Watchable*> get_history() const;
+    virtual Watchable* updateUser(Session& s) = 0;
 protected:
     std::vector<Watchable*> history;
 private:
@@ -27,6 +28,7 @@ public:
     LengthRecommenderUser(const std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:
+    float _avgWatchableLen;
 };
 
 class RerunRecommenderUser : public User {
