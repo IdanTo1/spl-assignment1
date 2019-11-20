@@ -16,6 +16,8 @@ public:
     Session(const std::string &configFilePath);
     ~Session();
     void start();
+    const std::vector<Watchable*>& getContent() const;
+    const User& getActiveUser() const;
 private:
     std::vector<Watchable*> content;
     std::vector<BaseAction*> actionsLog;
