@@ -13,6 +13,7 @@ public:
     virtual ~Watchable();
     virtual std::string toString() const = 0;
     virtual Watchable* getNextWatchable(Session&) const = 0;
+    std::string getTagsString();
 private:
     const long id;
     int length;
@@ -22,7 +23,7 @@ private:
 class Movie : public Watchable{
 public:
     Movie(long id, const std::string& name, int length, const std::vector<std::string>& tags);
-    virtual std::string toString(bool print_full=false) const;
+    virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
 private:
     std::string name;
@@ -32,7 +33,7 @@ private:
 class Episode: public Watchable{
 public:
     Episode(long id, const std::string& seriesName,int length, int season, int episode ,const std::vector<std::string>& tags);
-    virtual std::string toString(bool print_full=false) const;
+    virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
 private:
     std::string seriesName;
