@@ -19,6 +19,11 @@ Movie::Movie(long id, const std::string& name, int length, const std::vector<std
 : Watchable(id, length, tags), name(name)
 {}
 
+Watchable* Movie::getNextWatchable(Session& s)
+{
+    return nullptr;
+}
+
 std::string Movie::toString() const
 {
     return name+" "+length+" minutes "+getTagsString();
@@ -30,4 +35,11 @@ Episode::Episode(long id, std::string& seriesName, int length, int season, int e
 std::string Episode::toString()
 {
     return name+" S"+season+"E"+episode+" "+length+" minutes "+getTagsString();
+}
+
+Watchable* Episode::getNextWatchable(Session& s)
+{
+    if(nextEpisodeId == 0) return nullptr;
+    std::vector<Watchable*>& content = s.getContent();
+    return content[nextEpisodeId];
 }
