@@ -7,6 +7,7 @@
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
+#include "PopularTag.h"
 
 class User;
 class Watchable;
