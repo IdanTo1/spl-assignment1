@@ -7,6 +7,8 @@
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
+#include "../include/json.hpp"
+
 
 class User;
 class Watchable;
@@ -23,5 +25,7 @@ private:
     std::vector<BaseAction*> actionsLog;
     std::unordered_map<std::string,User*> userMap;
     User* activeUser;
+    std::vector<std::string> extractTags(nlohmann::json& tagList);
+    void fillContentFromJson(const std::string &configFilePath);
 };
 #endif
