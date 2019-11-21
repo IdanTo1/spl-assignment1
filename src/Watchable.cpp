@@ -1,4 +1,3 @@
-#include "../include/Watchable.h"
 #include "../include/Session.h"
 
 
@@ -19,10 +18,9 @@ Movie::Movie(long id, const std::string& name, int length, const std::vector<std
 : Watchable(id, length, tags), name(name)
 {}
 
-Watchable* Movie::getNextWatchable(Session& s)
+Watchable* Movie::getNextWatchable(Session& s) const
 {
-    User& activeUser = s.getActiveUser();
-    return activeUser.getRecommendation(s);
+  return nullptr;
 }
 
 std::string Movie::toString() const
@@ -31,20 +29,27 @@ std::string Movie::toString() const
 }
 
 Episode::Episode(long id, std::string& seriesName, int length, int season, int episode, const std::vector<std::string>& tags)
-: Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(id+1) {}
+: Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(id+1) 
+{}
 
-std::string Episode::toString()
+std::string Episode::toString() const
 {
     return name+" S"+season+"E"+episode+" "+length+" minutes "+getTagsString(); // According to the "Game of Thrones S01E02 56 minutes [Fantasy, Drama]" format
 }
 
-Watchable* Episode::getNextWatchable(Session& s)
+Watchable* Episode::getNextWatchable(Session& s) const
 {
-    if(nextEpisodeId == 0) //If there isn't a next episode return the user's recommendation
+    if(nextEpisodeId == 0) //If there isn't a next episode return nullptr
     {
-        User& activeUser = s.getActiveUser();
-        return activeUser.getRecommendation(s);
+        return nullptr;
     }
     std::vector<Watchable*>& content = s.getContent(); //If there is a next episode return it
     return content[nextEpisodeId];
+}
+
+Episode::Episode(long id, const std::string& seriesName,int length, int season, int episode, bool isLastEpisode, const std::vector<std::string>& tags)
+: Episode(id, seriesName, length, season, episode, tags)
+{
+    if(isLastEpisode)
+        nextEpisodeId = 0;
 }
