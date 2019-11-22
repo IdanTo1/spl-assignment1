@@ -92,14 +92,31 @@ Session::Session(const Session &s)
     clean();
 }
 
+void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& newUsers)
+{
+    for(auto u: newUsers)
+    {
+        // Assuming User's copy constructor deep copies
+        *(userMap[u.first()]) = *(u.second());
+    }
+}
+
+void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV)
+{
+    for(auto x: newV)
+    {
+        ourV.push_back(new T(*x));
+    }
+}
+
 Session& Session::operator=(const Session& s)
 {
     if(this != s)
     {
         clean();
-        this->content = s.content;
-        this->userMap = s.userMap;
-        this->actionsLog = s.actionsLog;
+        this->deepCopyPointerVector(s.content, this->content);
+        this->deepCopyPointerVector(s.actionsLog, this->actionsLog);
+        this->deepCopyUsers(s.userMap);
         this->activeUser = userMap[s.activeUser->getName()];
     }
     return *this
