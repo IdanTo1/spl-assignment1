@@ -1,7 +1,8 @@
 #include "../include/Session.h"
 
 
-Watchable::Watchable(long id, int length, const std::vector<std::string>& tags)
+Watchable::Watchable(long id, int length,
+                     const std::vector<std::string>& tags)
 : id(id), length(length), tags(tags){}
 
 // auxillary to avoid code duplication
@@ -15,7 +16,8 @@ std::string Watchable::getTagStrings() const
     return totalString+"]";
 }
 
-Movie::Movie(long id, const std::string& name, int length, const std::vector<std::string>& tags)
+Movie::Movie(long id, const std::string& name, int length,
+             const std::vector<std::string>& tags)
 : Watchable(id, length, tags), name(name)
 {}
 
@@ -30,8 +32,10 @@ std::string Movie::toString() const
     return name+" "+length+" minutes "+getTagsString();
 }
 
-Episode::Episode(long id, std::string& seriesName, int length, int season, int episode, const std::vector<std::string>& tags)
-: Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(id+1) 
+Episode::Episode(long id, std::string& seriesName, int length, int season,
+                 int episode, const std::vector<std::string>& tags)
+: Watchable(id, length, tags), seriesName(seriesName), season(season),
+     episode(episode), nextEpisodeId(id+1) 
 {}
 
 std::string Episode::toString() const
@@ -46,10 +50,12 @@ Watchable* Episode::getNextWatchable(Session& s) const
     {
         return nullptr;
     }
-    std::vector<Watchable*>& content = s.getContent(); //If there is a next episode return it
+    //If there is a next episode return it
+    std::vector<Watchable*>& content = s.getContent();
     return content[nextEpisodeId];
 }
 
-Episode::Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags)
+Episode::Episode(long id, const std::string& seriesName,int length, int season,
+                 int episode, int nextEpisodeId, const std::vector<std::string>& tags)
 : Episode(id, seriesName, length, season, episode, tags), nextEpisodeId(nextEpisodeId)
 {}

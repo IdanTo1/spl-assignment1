@@ -26,7 +26,9 @@ void Session::fillContentFromJson(const std::string &configFilePath)
 
     for(auto movieDesc: contentJson["movies"]) //iterate over movies and add them to content
     {
-        Movie* movieObj = new Movie(currentId, movieDesc["name"], movieDesc["length"], this->extractTags(movieDesc["tags"]));
+        Movie* movieObj = new Movie(currentId, movieDesc["name"],
+                                     movieDesc["length"],
+                                     this->extractTags(movieDesc["tags"]));
         content.push_back(movieObj);
         currentId++;
     }
@@ -41,10 +43,10 @@ void Session::fillContentFromJson(const std::string &configFilePath)
                 if(j == seriesDesc["seasons"][i]-1 && i==seriesDesc["seasons"].size())
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
-                std::string SeriesName = seriesDesc["name"];
-                int epLength = seriesDesc["episode_length"];
-                std::vector<std::string> tags = this->extractTags(seriesDesc["tags"]);
-                Episode* episodeObj = new Episode(currentId, SeriesName, epLength, i+1, j+1, nextEpisodeId, tags);
+                Episode* episodeObj = new Episode(currentId, seriesDesc["name"],
+                                                 seriesDesc["episode_length"],
+                                                 i+1, j+1, nextEpisodeId,
+                                                 this->extractTags(seriesDesc["tags"]));
                 content.push_back(episodeObj);
                 currentId++;
             }
