@@ -4,7 +4,8 @@
 Watchable::Watchable(long id, int length, const std::vector<std::string>& tags)
 : id(id), length(length), tags(tags){}
 
-std::string Watchable::getTagStrings() // auxillary to avoid code duplication
+// auxillary to avoid code duplication
+std::string Watchable::getTagStrings() const 
 {
     std::string totalString = "[";
     for(auto tag : tags)
@@ -25,7 +26,8 @@ Watchable* Movie::getNextWatchable(Session& s) const
 
 std::string Movie::toString() const
 {
-    return name+" "+length+" minutes "+getTagsString(); // According to the "Inglorious Basterds 153 minutes [War, Western]" format
+    // According to the "Inglorious Basterds 153 minutes [War, Western]" format
+    return name+" "+length+" minutes "+getTagsString();
 }
 
 Episode::Episode(long id, std::string& seriesName, int length, int season, int episode, const std::vector<std::string>& tags)
@@ -34,7 +36,8 @@ Episode::Episode(long id, std::string& seriesName, int length, int season, int e
 
 std::string Episode::toString() const
 {
-    return name+" S"+season+"E"+episode+" "+length+" minutes "+getTagsString(); // According to the "Game of Thrones S01E02 56 minutes [Fantasy, Drama]" format
+    // According to the "Game of Thrones S01E02 56 minutes [Fantasy, Drama]" format
+    return name+" S"+season+"E"+episode+" "+length+" minutes "+getTagsString();
 }
 
 Watchable* Episode::getNextWatchable(Session& s) const
@@ -48,7 +51,5 @@ Watchable* Episode::getNextWatchable(Session& s) const
 }
 
 Episode::Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags)
-: Episode(id, seriesName, length, season, episode, tags)
-{
-    this->nextEpisodeId = nextEpisodeId
-}
+: Episode(id, seriesName, length, season, episode, tags), nextEpisodeId(nextEpisodeId)
+{}

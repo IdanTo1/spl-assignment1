@@ -6,6 +6,15 @@ Session::Session(const std::string &configFilePath)
     this->fillContentFromJson(configFilePath);
 }
 
+std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
+{
+    std::vector<std::string> tags;
+    for(auto tag : tagList){
+        tags.push_back(tag);
+    }
+    return tags;
+}
+
 void Session::fillContentFromJson(const std::string &configFilePath)
 {
     content = std::vector<Watchable*>(); 
@@ -21,18 +30,21 @@ void Session::fillContentFromJson(const std::string &configFilePath)
         content.push_back(movieObj);
         currentId++;
     }
-
-    for(auto seriesDesc: contentJson["tv_series"]) //iterate over tv series'. for each series and season add the corresponding episode
+    //iterate over tv series'. for each series and season add the corresponding episode
+    for(auto seriesDesc: contentJson["tv_series"])
     {
         for(uint i = 0; i < seriesDesc["seasons"].size(); i++)
         {
             for(uint j = 0; j < seriesDesc["seasons"][i]; j++)
             {
-                Episode* episodeObj= nullptr;
-                int nextEpisodeId = j+2;
-                if(j == seriesDesc["seasons"][i]-1)
+                int nextEpisodeId = currentId+1;
+                if(j == seriesDesc["seasons"][i]-1 && i==seriesDesc["seasons"].size())
                     nextEpisodeId = 0;
-                episodeObj = new Episode(currentId, seriesDesc["name"], seriesDesc["episode_length"], i+1, j+1, nextEpisodeId, this->extractTags(seriesDesc["tags"]));
+                //i+1 and j+1 because seasons and episodes start from 1
+                std::string SeriesName = seriesDesc["name"];
+                int epLength = seriesDesc["episode_length"];
+                std::vector<std::string> tags = this->extractTags(seriesDesc["tags"]);
+                Episode* episodeObj = new Episode(currentId, SeriesName, epLength, i+1, j+1, nextEpisodeId, tags);
                 content.push_back(episodeObj);
                 currentId++;
             }
@@ -40,14 +52,6 @@ void Session::fillContentFromJson(const std::string &configFilePath)
     } 
 }
 
-std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
-{
-    std::vector<std::string> tags;
-    for(auto tag : tagList){
-        tags.push_back(tag);
-    }
-    return tags;
-}
 
 const User& Session::getActiveUser() const
 {
