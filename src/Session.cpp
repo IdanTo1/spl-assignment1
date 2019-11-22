@@ -97,9 +97,9 @@ Session& Session::operator=(const Session& s)
     if(this != s)
     {
         clean();
-        this->content = rhs.content;
-        this->userMap = rhs.userMap;
-        this->actionsLog = rhs.actionsLog;
+        this->content = s.content;
+        this->userMap = s.userMap;
+        this->actionsLog = s.actionsLog;
         this->activeUser = userMap[s.activeUser->getName()];
     }
     return *this
