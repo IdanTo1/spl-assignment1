@@ -47,9 +47,8 @@ Watchable* Episode::getNextWatchable(Session& s) const
     return content[nextEpisodeId];
 }
 
-Episode::Episode(long id, const std::string& seriesName,int length, int season, int episode, bool isLastEpisode, const std::vector<std::string>& tags)
+Episode::Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags)
 : Episode(id, seriesName, length, season, episode, tags)
 {
-    if(isLastEpisode)
-        nextEpisodeId = 0;
+    this->nextEpisodeId = nextEpisodeId
 }

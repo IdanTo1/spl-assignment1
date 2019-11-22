@@ -35,7 +35,7 @@ public:
     Episode(long id, const std::string& seriesName,int length, int season, int episode ,const std::vector<std::string>& tags);
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
-    Episode(long id, const std::string& seriesName,int length, int season, int episode, bool isLastEpisode, const std::vector<std::string>& tags);
+    Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags);
 private:
     std::string seriesName;
     int season;
