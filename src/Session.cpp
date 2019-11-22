@@ -40,7 +40,7 @@ void Session::fillContentFromJson(const std::string &configFilePath)
             for(uint j = 0; j < seriesDesc["seasons"][i]; j++)
             {
                 int nextEpisodeId = currentId+1;
-                if(j == seriesDesc["seasons"][i]-1 && i==seriesDesc["seasons"].size())
+                if(j == seriesDesc["seasons"][i]-1 && i==seriesDesc["seasons"].size()-1)
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
                 Episode* episodeObj = new Episode(currentId, seriesDesc["name"],
