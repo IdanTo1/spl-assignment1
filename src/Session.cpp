@@ -31,7 +31,7 @@ void Session::fillContentFromJson(const std::string &configFilePath)
                 Episode* episodeObj= nullptr;
                 if(j == seriesDesc["seasons"][i]-1)
                     episodeObj = new Episode(currentId, seriesDesc["name"], seriesDesc["episode_length"], i+1, j+1, true, this->extractTags(seriesDesc["tags"])); //i+1 and j+1 because we want the first episode to be S1E1
-                episodeObj = new Episode(currentId, seriesDesc["name"], seriesDesc["episode_length"], i+1, j+1, this->extractTags(seriesDesc["tags"]));
+                else episodeObj = new Episode(currentId, seriesDesc["name"], seriesDesc["episode_length"], i+1, j+1, this->extractTags(seriesDesc["tags"]));
                 content.push_back(episodeObj);
                 currentId++;
             }
