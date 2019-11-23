@@ -59,3 +59,13 @@ Episode::Episode(long id, const std::string& seriesName,int length, int season,
                  int episode, int nextEpisodeId, const std::vector<std::string>& tags)
 : Episode(id, seriesName, length, season, episode, tags), nextEpisodeId(nextEpisodeId)
 {}
+
+Watchable* Episode::clone()
+{
+    return new Episode(*this);
+}
+
+Watchable* Movie::clone()
+{
+    return new Movie(*this);
+}

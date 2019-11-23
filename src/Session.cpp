@@ -108,13 +108,14 @@ void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& newUse
     }
 }
 
+//Assuming that ourV is empty
 template<typename T>
 void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV)
 {
     for(auto x: newV)
     {
         //create a new T object using T's copy constructor
-        ourV.push_back(new T(*x));
+        ourV.push_back(x->clone());
     }
 }
 

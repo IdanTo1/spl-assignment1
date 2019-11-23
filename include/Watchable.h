@@ -14,6 +14,8 @@ public:
     virtual std::string toString() const = 0;
     virtual Watchable* getNextWatchable(Session&) const = 0;
     std::string getTagsString() const;
+    virtual Watchable(Watchable&) = 0;
+    virtual Watchable* clone() = 0;
 private:
     const long id;
     int length;
@@ -25,6 +27,7 @@ public:
     Movie(long id, const std::string& name, int length, const std::vector<std::string>& tags);
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
+    virtual Watchable* clone();
 private:
     std::string name;
 };
@@ -36,6 +39,7 @@ public:
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
     Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags);
+    virtual Watchable* clone();
 private:
     std::string seriesName;
     int season;
