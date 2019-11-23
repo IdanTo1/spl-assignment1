@@ -18,6 +18,7 @@ public:
 	virtual void act(Session& sess)=0;
 	virtual std::string toString() const=0;
 	virtual BaseAction* clone() = 0;
+	virtual ~BaseAction();
 protected:
 	void complete();
 	void error(const std::string& errorMsg);
