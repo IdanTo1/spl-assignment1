@@ -36,3 +36,56 @@ void CreateUser::act(Session& sess)
 
     }
 }
+
+
+//clones
+
+virtual BaseAction* CreateUser::clone()
+{
+    return new CreateUser(*this);
+}
+
+virtual BaseAction* ChangeActiveUser::clone()
+{
+    return new ChangeActiveUser(*this);
+}
+
+virtual BaseAction* DeleteUser::clone()
+{
+    return new DeleteUser(*this);
+}
+
+virtual BaseAction* DeleteUser::clone()
+{
+    return new DeleteUser(*this);
+}
+
+virtual BaseAction* DuplicateUser::clone()
+{
+    return new DuplicateUser(*this);
+}
+
+virtual BaseAction* PrintContentList::clone()
+{
+    return new PrintContentList(*this);
+}
+
+virtual BaseAction* PrintWatchHistory::clone()
+{
+    return new PrintWatchHistory(*this);
+}
+
+virtual BaseAction* Watch::clone()
+{
+    return new Watch(*this);
+}
+
+virtual BaseAction* PrintActionsLog::clone()
+{
+    return new PrintActionsLog(*this);
+}
+
+virtual BaseAction* Exit::clone()
+{
+    return new Exit(*this);
+}
