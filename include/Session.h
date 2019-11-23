@@ -37,7 +37,7 @@ private:
     void cleanIterable(T* toDelete);
     void clean();
     template <typename T>
-    void deepCopyPointerVector(const std::vector<T>& newV, std::vector<T>& ourV);
+    void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
     void deepCopyUsers(const std::unordered_map<std::string, User*>& newUsers);
 };
 #endif

@@ -17,7 +17,6 @@ std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
 
 void Session::fillContentFromJson(const std::string &configFilePath)
 {
-    content = std::vector<Watchable*>(); 
     std::ifstream stream(configFilePath);
     nlohmann::json contentJson;
     stream >> contentJson;
@@ -75,7 +74,7 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     delete toDelete;
 }
 
-Session::clean()
+void Session::clean()
 {
     activeUser = nullptr;
     cleanIterable(content);
@@ -88,7 +87,7 @@ Session::Session(const Session &s)
  activeUser(userMap[s.activeUser->getName()]) 
 {}
 
-~Session()
+Session::~Session()
 {
     clean();
 }
@@ -97,7 +96,7 @@ void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& newUse
 {
     for(auto u: newUsers)
     {
-        *(userMap[u.first()]) = *(u.second());
+        *(this->userMap[u.first]) = *(u.second);
     }
 }
 
@@ -113,7 +112,7 @@ void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>
 
 Session& Session::operator=(const Session& s)
 {
-    if(this != s)
+    if(this != &s)
     {
         clean();
         this->deepCopyPointerVector(s.content, this->content);
@@ -121,7 +120,7 @@ Session& Session::operator=(const Session& s)
         this->deepCopyUsers(s.userMap);
         this->activeUser = userMap[s.activeUser->getName()];
     }
-    return *this
+    return *this;
 }
 
 Session::Session(Session && s)
@@ -133,7 +132,7 @@ Session::Session(Session && s)
 
 Session& Session::operator=(Session && s)
 {
-    if(this != s)
+    if(this != &s)
     {
         clean();
         this->content = s.content;
@@ -141,7 +140,7 @@ Session& Session::operator=(Session && s)
         this->userMap = s.userMap;
         purgeSession(s);
     }
-    return this*;
+    return *this;
 }
 
 void Session::purgeSession(Session&& s)
@@ -150,7 +149,7 @@ void Session::purgeSession(Session&& s)
         which will be quickly deleted anyway
     */
     s.content = std::vector<Watchable*>();
-    s.actionsLog = std::vector<Watchable*>();
+    s.actionsLog = std::vector<BaseAction*>();
     s.userMap = std::unordered_map<std::string, User*>();
     s.activeUser = nullptr;
 }
