@@ -65,6 +65,7 @@ const std::vector<Watchable*>& Session::getContent() const
     return content;
 }
 
+template<typename T>
 void Session::cleanIterable(T* toDelete) //T should be iterable
 {
     for(auto w: toDelete)
@@ -96,15 +97,16 @@ void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& newUse
 {
     for(auto u: newUsers)
     {
-        // Assuming User's copy constructor deep copies
         *(userMap[u.first()]) = *(u.second());
     }
 }
 
+template<typename T>
 void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV)
 {
     for(auto x: newV)
     {
+        //create a new T object using T's copy constructor
         ourV.push_back(new T(*x));
     }
 }
