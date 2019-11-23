@@ -151,7 +151,7 @@ Session& Session::operator=(Session && s)
     return *this;
 }
 
-void Session::purgeSession(Session&& s)
+void Session::purgeSession(Session& s)
 {
      /* Since the vectors are held by value we have to give it an empty one,
         which will be quickly deleted anyway

@@ -24,7 +24,7 @@ public:
     Session& operator=(const Session& s);
     Session(Session&& s);
     Session& operator=(Session&& s);
-    void purgeSession(Session&& s);
+    void purgeSession(Session& s);
 private:
     std::vector<Watchable*> content;
     std::vector<BaseAction*> actionsLog;
