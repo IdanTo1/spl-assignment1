@@ -40,7 +40,8 @@ void Session::fillContentFromJson(const std::string &configFilePath)
             for(uint j = 0; j < seriesDesc["seasons"][i]; j++)
             {
                 int nextEpisodeId = currentId+1;
-                if(j == seriesDesc["seasons"][i]-1 && i==seriesDesc["seasons"].size()-1)
+                //json int's .size() returns the integer
+                if(j == seriesDesc["seasons"][i].size()-1 && i==seriesDesc["seasons"].size()-1)
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
                 Episode* episodeObj = new Episode(currentId, seriesDesc["name"],
@@ -65,21 +66,41 @@ const std::vector<Watchable*>& Session::getContent() const
     return content;
 }
 
-void Session::cleanIterable(T* toDelete) //T should be iterable
+const std::unordered_map<std::string,User*>& Session::getUsers() const
+{
+    return userMap;
+}
+
+void Session::addUser(User* user)
+{
+    //Assuming this function is called after checking whether the addition is legal
+    userMap[user->getName()] = user;
+}
+
+template<typename T>
+void Session::cleanIterable(T& toDelete) //T should be iterable
 {
     for(auto w: toDelete)
     {
         delete w;
     }
-    delete toDelete;
+    delete &toDelete;
 }
 
-Session::clean()
+void Session::cleanUserMap()
+{
+    for(auto w: userMap)
+    {
+        delete w.second;
+    }
+}
+
+void Session::clean()
 {
     activeUser = nullptr;
     cleanIterable(content);
     cleanIterable(actionsLog);
-    cleanIterable(userMap);
+    cleanUserMap();
 }
 
 Session::Session(const Session &s)
@@ -87,22 +108,22 @@ Session::Session(const Session &s)
  activeUser(userMap[s.activeUser->getName()]) 
 {}
 
-~Session()
+Session::~Session()
 {
     clean();
 }
 
 Session& Session::operator=(const Session& s)
 {
-    if(this != s)
+    if(this != &s)
     {
         clean();
-        this->content = rhs.content;
-        this->userMap = rhs.userMap;
-        this->actionsLog = rhs.actionsLog;
+        this->content = s.content;
+        this->userMap = s.userMap;
+        this->actionsLog = s.actionsLog;
         this->activeUser = userMap[s.activeUser->getName()];
     }
-    return *this
+    return *this;
 }
 
 Session::Session(Session && s)
@@ -114,7 +135,7 @@ Session::Session(Session && s)
 
 Session& Session::operator=(Session && s)
 {
-    if(this != s)
+    if(this != &s)
     {
         clean();
         this->content = s.content;
@@ -122,16 +143,16 @@ Session& Session::operator=(Session && s)
         this->userMap = s.userMap;
         purgeSession(s);
     }
-    return this*;
+    return *this;
 }
 
-void Session::purgeSession(Session&& s)
+void Session::purgeSession(Session& s)
 {
      /* Since the vectors are held by value we have to give it an empty one,
         which will be quickly deleted anyway
     */
     s.content = std::vector<Watchable*>();
-    s.actionsLog = std::vector<Watchable*>();
+    s.actionsLog = std::vector<BaseAction*>();
     s.userMap = std::unordered_map<std::string, User*>();
     s.activeUser = nullptr;
 }
