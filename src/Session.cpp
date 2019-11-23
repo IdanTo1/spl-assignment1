@@ -65,13 +65,21 @@ const std::vector<Watchable*>& Session::getContent() const
 }
 
 template<typename T>
-void Session::cleanIterable(T* toDelete) //T should be iterable
+void Session::cleanIterable(T& toDelete) //T should be iterable
 {
     for(auto w: toDelete)
     {
         delete w;
     }
-    delete toDelete;
+    delete &toDelete;
+}
+
+void Session::cleanUserMap()
+{
+    for(auto w: userMap)
+    {
+        delete w.second;
+    }
 }
 
 void Session::clean()

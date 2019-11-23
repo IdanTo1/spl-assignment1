@@ -34,8 +34,9 @@ private:
     std::vector<std::string> extractTags(nlohmann::json& tagList);
     void fillContentFromJson(const std::string &configFilePath);
     template<typename T>
-    void cleanIterable(T* toDelete);
+    void cleanIterable(T& toDelete);
     void clean();
+    void cleanUserMap();
     template <typename T>
     void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
     void deepCopyUsers(const std::unordered_map<std::string, User*>& newUsers);
