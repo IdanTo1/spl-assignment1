@@ -6,7 +6,7 @@ Watchable::Watchable(long id, int length,
 : id(id), length(length), tags(tags){}
 
 // auxillary to avoid code duplication
-std::string Watchable::getTagsString() const 
+const std::string Watchable::getTagsString() const 
 {
     std::string totalString = "[";
     for(auto tag : tags)
@@ -14,6 +14,11 @@ std::string Watchable::getTagsString() const
         totalString += tag;
     }
     return totalString+"]";
+}
+
+const std::vector<std::string> getTags() const
+{
+    return tags;
 }
 
 int Watchable::getLength() const
