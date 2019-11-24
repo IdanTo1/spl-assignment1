@@ -16,8 +16,8 @@ public:
     User(const std::string& name);
     virtual ~User();
     virtual Watchable* getRecommendation(Session& s) = 0;
-    const std::string getName() const;
-    const std::vector<Watchable*> get_history() const;
+    std::string getName() const;
+    std::vector<Watchable*> get_history() const;
     virtual void addToHistory(Watchable&);
     bool isInHistory(const Watchable&);
 protected:
