@@ -8,6 +8,13 @@ ActionStatus BaseAction::getStatus() const
     return status;
 }
 
+std::string BaseAction::getStatusString()
+{
+    if(status == COMPLETED) return "COMPLETED";
+    else if(status == PENDING) return "PENDING";
+    else return "ERROR: "+getErrorMsg();
+}
+
 void BaseAction::complete()
 {
     status = COMPLETED;
@@ -37,6 +44,17 @@ void CreateUser::act(Session& sess)
 
     }
 }
+
+void Exit::act(Session& sess)
+{
+    complete();
+}
+
+std::string Exit::toString()
+{
+    return "Exit "+getStatusString();
+}
+
 
 
 //clones

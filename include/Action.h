@@ -23,6 +23,7 @@ protected:
 	void complete();
 	void error(const std::string& errorMsg);
 	std::string getErrorMsg() const;
+	const std::string getStatusString() const;
 private:
 	std::string errorMsg;
 	ActionStatus status;
