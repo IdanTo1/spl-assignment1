@@ -55,7 +55,23 @@ std::string Exit::toString() const
     return "Exit "+getStatusString();
 }
 
+PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog)
+: actionsLog(actionsLog) {}
 
+void PrintActionsLog::act(Session& s)
+{
+    std::string printable = "";
+    for (auto i = actionsLog.rbegin(); i != actionsLog.rend(); ++i ) {
+            printable += (*i)->toString() + "\n";
+    }
+    std::cout << printable;
+    complete();
+}
+
+std::string PrintActionsLog::toString() const
+{
+    return "Log "+getStatusString();
+}
 
 //clones
 

@@ -90,6 +90,9 @@ public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone();
+	PrintActionsLog(const std::vector<BaseAction*>& actionsLog);
+private:
+	const std::vector<BaseAction*>& actionsLog;
 };
 
 class Exit : public BaseAction {
