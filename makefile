@@ -36,3 +36,4 @@ bin/PopularTag.o: include/PopularTag.h src/PopularTag.cpp
 .PHONY: all clean
 clean:
 	rm -f bin/*
+	
