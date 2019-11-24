@@ -31,7 +31,8 @@ CreateUser::CreateUser(const std::string& name,
 
 void CreateUser::act(Session& sess)
 {
-    if(sess.getUsers()[name] != nullptr)
+    const std::unordered_map<std::string, User*>& users = sess.getUsers();
+    if(users.find(name) != users.end())
     {
 
     }
@@ -40,52 +41,47 @@ void CreateUser::act(Session& sess)
 
 //clones
 
-virtual BaseAction* CreateUser::clone()
+BaseAction* CreateUser::clone()
 {
     return new CreateUser(*this);
 }
 
-virtual BaseAction* ChangeActiveUser::clone()
+BaseAction* ChangeActiveUser::clone()
 {
     return new ChangeActiveUser(*this);
 }
 
-virtual BaseAction* DeleteUser::clone()
+BaseAction* DeleteUser::clone()
 {
     return new DeleteUser(*this);
 }
 
-virtual BaseAction* DeleteUser::clone()
-{
-    return new DeleteUser(*this);
-}
-
-virtual BaseAction* DuplicateUser::clone()
+BaseAction* DuplicateUser::clone()
 {
     return new DuplicateUser(*this);
 }
 
-virtual BaseAction* PrintContentList::clone()
+BaseAction* PrintContentList::clone()
 {
     return new PrintContentList(*this);
 }
 
-virtual BaseAction* PrintWatchHistory::clone()
+BaseAction* PrintWatchHistory::clone()
 {
     return new PrintWatchHistory(*this);
 }
 
-virtual BaseAction* Watch::clone()
+BaseAction* Watch::clone()
 {
     return new Watch(*this);
 }
 
-virtual BaseAction* PrintActionsLog::clone()
+BaseAction* PrintActionsLog::clone()
 {
     return new PrintActionsLog(*this);
 }
 
-virtual BaseAction* Exit::clone()
+BaseAction* Exit::clone()
 {
     return new Exit(*this);
 }

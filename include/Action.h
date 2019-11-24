@@ -32,7 +32,11 @@ class CreateUser  : public BaseAction {
 public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
+	CreateUser(const std::string& name, const std::string& recommendationType);
 	virtual BaseAction* clone();
+private:
+	std::string name;
+	std::string recommendationType;
 };
 
 class ChangeActiveUser : public BaseAction {
