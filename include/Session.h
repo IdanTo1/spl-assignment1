@@ -7,6 +7,7 @@
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
+#include "PopularTag.h"
 #include "../include/json.hpp"
 
 
@@ -33,7 +34,7 @@ private:
 
     std::vector<std::string> extractTags(nlohmann::json& tagList);
     void fillContentFromJson(const std::string &configFilePath);
-    template<T>
+    template<typename T>
     void cleanIterable(T* toDelete);
     void clean();
 };
