@@ -8,7 +8,7 @@ ActionStatus BaseAction::getStatus() const
     return status;
 }
 
-std::string BaseAction::getStatusString()
+const std::string BaseAction::getStatusString() const
 {
     if(status == COMPLETED) return "COMPLETED";
     else if(status == PENDING) return "PENDING";
@@ -50,7 +50,7 @@ void Exit::act(Session& sess)
     complete();
 }
 
-std::string Exit::toString()
+std::string Exit::toString() const
 {
     return "Exit "+getStatusString();
 }
