@@ -5,19 +5,19 @@
 #ifndef POPULARTAG_H
 #define POPULARTAG_H
 
+#include <string>
 
 class PopularTag {
     public:
-        PopularTag(std::string&);
+        PopularTag(std::string);
         const std::string& getName() const;
         int getCount() const;
         void increaseCount();
         // overloaded < operator
         bool operator <(const PopularTag&);
     private:
-        const std::string _name; // i won't use reference to prevent conflicts.
+        std::string _name;
         int _count;
 };
-
 
 #endif //POPULARTAG_H
