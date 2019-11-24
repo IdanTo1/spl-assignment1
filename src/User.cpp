@@ -3,11 +3,11 @@
 // User's related methods implementation.
 User::User(const std::string& name): history(), name(name) {}
 
-const std::string User::getName() const {
+std::string User::getName() const {
     return name;
 }
 
-const std::vector<Watchable*> User::get_history() const {
+std::vector<Watchable*> User::get_history() const {
     return history;
 }
 
