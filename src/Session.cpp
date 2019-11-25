@@ -119,9 +119,9 @@ Session::~Session()
     this->clean();
 }
 
-void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& newUsers)
+void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
 {
-    for(auto u: newUsers)
+    for(auto u: other)
     {
         *(this->userMap[u.first]) = *(u.second);
     }
