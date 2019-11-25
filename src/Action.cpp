@@ -58,13 +58,13 @@ void PrintContentList::act(Session& sess) {
     int i = 1; //Because human lists start at 1
     for(auto w: content)
     {
-        cout << std::to_string(i) << w.toString() << std::endl;
+        std::cout << std::to_string(i) << w->toString() << std::endl;
         i++;
     }
 }
 
-std::string PrintActionsList::toString() const {
-    return "PrintActionsList " + getStatusString();
+std::string PrintContentList::toString() const {
+    return "PrintContentList " + getStatusString();
 }
 
 
@@ -97,47 +97,47 @@ std::string PrintActionsLog::toString() const
 
 // Clones for polymorphic copying
 
-BaseAction* CreateUser::clone()
+BaseAction* CreateUser::clone() const
 {
     return new CreateUser(*this);
 }
 
-BaseAction* ChangeActiveUser::clone()
+BaseAction* ChangeActiveUser::clone() const
 {
     return new ChangeActiveUser(*this);
 }
 
-BaseAction* DeleteUser::clone()
+BaseAction* DeleteUser::clone() const
 {
     return new DeleteUser(*this);
 }
 
-BaseAction* DuplicateUser::clone()
+BaseAction* DuplicateUser::clone() const
 {
     return new DuplicateUser(*this);
 }
 
-BaseAction* PrintContentList::clone()
+BaseAction* PrintContentList::clone() const
 {
     return new PrintContentList(*this);
 }
 
-BaseAction* PrintWatchHistory::clone()
+BaseAction* PrintWatchHistory::clone() const
 {
     return new PrintWatchHistory(*this);
 }
 
-BaseAction* Watch::clone()
+BaseAction* Watch::clone() const
 {
     return new Watch(*this);
 }
 
-BaseAction* PrintActionsLog::clone()
+BaseAction* PrintActionsLog::clone() const
 {
     return new PrintActionsLog(*this);
 }
 
-BaseAction* Exit::clone()
+BaseAction* Exit::clone() const
 {
     return new Exit(*this);
 }
