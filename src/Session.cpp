@@ -21,7 +21,6 @@ std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
 
 void Session::fillContentFromJson(const std::string &configFilePath)
 {
-    content = std::vector<Watchable*>(); 
     std::ifstream stream(configFilePath);
     nlohmann::json contentJson;
     stream >> contentJson;
@@ -120,20 +119,38 @@ Session::~Session()
     this->clean();
 }
 
+void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
+{
+    for(auto u: other)
+    {
+        *(this->userMap[u.first]) = *(u.second);
+    }
+}
+
+//Assuming that ourV is empty
+template<typename T>
+void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV)
+{
+    for(auto x: newV)
+    {
+        //create a new T object using T's copy constructor
+        ourV.push_back(x->clone());
+    }
+}
+
 Session& Session::operator=(const Session& rhs)
 {
     if(this != &rhs)
     {
-        this->clean();
-        this->content = rhs.content;
-        this->userMap = rhs.userMap;
-        this->actionsLog = rhs.actionsLog;
+        clean();
+        this->deepCopyPointerVector(rhs.content, this->content);
+        this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
+        this->deepCopyUsers(rhs.userMap);
         this->activeUser = userMap[rhs.activeUser->getName()];
     }
     return *this;
 }
 
 Session::Session(Session && rhs) = default;
-
 
 Session& Session::operator=(Session && rhs) = default;
