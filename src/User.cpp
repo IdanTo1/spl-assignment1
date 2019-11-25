@@ -23,6 +23,10 @@ bool User::isInHistory(const Watchable& watchable) {
 // Length Recommender User's methods implementation.
 LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name), _avgWatchableLen(0.0f) {}
 
+User* LengthRecommenderUser::clone() const {
+    return new LengthRecommenderUser(*this);
+}
+
 void LengthRecommenderUser::updateAverage() {
     // we assume, that when updateAverage is called, new watchable has already been added to the history
     // vector. hence, we decrease by 1 history.size(), in the multiplication, and using history.size() in
@@ -30,6 +34,7 @@ void LengthRecommenderUser::updateAverage() {
     _avgWatchableLen = (_avgWatchableLen * (history.size() - 1) + history.back()->getLength())
             / history.size();
 }
+
 
 void LengthRecommenderUser::addToHistory(Watchable& watchable) {
     history.push_back(&watchable);
@@ -59,6 +64,10 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 RerunRecommenderUser::RerunRecommenderUser(const std::string& name):
     User(name), _lastRecIdx(-1) {}
 
+User* RerunRecommenderUser::clone() const{
+    return new RerunRecommenderUser(*this);
+}
+
 Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
     if (_lastRecIdx == -1) {
         return *(history.begin());
@@ -67,9 +76,14 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
     return history[_lastRecIdx];
 }
 
+
 // Genre Recommender User's methods implementation.
 GenreRecommenderUser::GenreRecommenderUser(const std::string& name): User(name), _popularTagsMap(),
                                                                         _popularTagsVector() {}
+
+User* GenreRecommenderUser::clone() const{
+    return new GenreRecommenderUser(*this);
+}
 
 void GenreRecommenderUser::updatePopularTags() {
     std::vector<std::string> lastWatchedTags = history.back()->getTags();
