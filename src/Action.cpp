@@ -58,6 +58,7 @@ void Exit::act(Session& sess)
     complete();
 }
 
+//TODO check if this is the right printing format
 std::string Exit::toString() const
 {
     return "Exit "+getStatusString();
