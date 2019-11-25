@@ -90,7 +90,7 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     {
         delete w;
     }
-    delete &toDelete;
+    delete toDelete;
 }
 
 void Session::cleanUserMap()
