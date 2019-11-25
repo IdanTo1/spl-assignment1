@@ -53,6 +53,21 @@ void CreateUser::act(Session& sess)
     }
 }
 
+void PrintContentList::act(Session& sess) {
+    const std::vector<Watchable*>& content = sess.getContent();
+    int i = 1; //Because human lists start at 1
+    for(auto w: content)
+    {
+        cout << std::to_string(i) << w.toString() << std::endl;
+        i++;
+    }
+}
+
+std::string PrintActionsList::toString() const {
+    return "PrintActionsList " + getStatusString();
+}
+
+
 void Exit::act(Session& sess)
 {
     complete();
@@ -61,7 +76,7 @@ void Exit::act(Session& sess)
 //TODO check if this is the right printing format
 std::string Exit::toString() const
 {
-    return "Exit "+getStatusString();
+    return "Exit " + getStatusString();
 }
 
 PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog)
