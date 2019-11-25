@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "Watchable.h"
 
 class Session;
 
@@ -10,6 +11,7 @@ enum ActionStatus{
 	PENDING, COMPLETED, ERROR
 };
 
+const std::string NO_RECOMMENDATION_ERR = "No recommendation was found";
 
 class BaseAction{
 public:
@@ -79,9 +81,14 @@ public:
 
 class Watch : public BaseAction {
 public:
+	Watch(Watchable& toWatch);
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
+	int getNextWatchableId() const;
+private:
+	Watchable& _toWatch;
+	int _nextWatchableId;
 };
 
 

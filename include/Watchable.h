@@ -16,6 +16,7 @@ public:
     const std::string getTagsString() const;
     int getLength() const;
     const std::vector<std::string>& getTags() const;
+    int getId() const;
 private:
     const long id;
     int length;

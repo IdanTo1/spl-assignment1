@@ -41,7 +41,7 @@ std::string BaseAction::getErrorMsg() const
 
 CreateUser::CreateUser(const std::string& name,
                          const std::string& recommendationType):
-                         name(name), recommendationType(recommendationType) 
+                         name(name), recommendationType(recommendationType)
 {}
 
 void CreateUser::act(Session& sess)
@@ -67,6 +67,47 @@ std::string PrintContentList::toString() const {
     return "PrintContentList " + getStatusString();
 }
 
+void PrintWatchHistory::act(Session& sess) {
+    const std::vector<Watchable*> history = sess.getActiveUser().get_history();
+    int i = 1; //Because human lists start at 1
+    for(auto w: history)
+    {
+        std::cout << std::to_string(i) << w->toString() << std::endl;
+        i++;
+    }
+    complete();
+}
+
+std::string PrintWatchHistory::toString() const {
+    return "PrintWatchHistory " + getStatusString();
+}
+
+Watch::Watch(Watchable& toWatch): BaseAction(), _toWatch(toWatch), _nextWatchableId(-1) {}
+
+void Watch::act(Session& sess) {
+    User& activeUser = sess.getActiveUser();
+    std::cout << "Watching " << _toWatch.toString();
+    activeUser.addToHistory(_toWatch);
+    Watchable* nextWatchable = activeUser.getRecommendation(sess);
+    if(nextWatchable == nullptr)
+        error(NO_RECOMMENDATION_ERR);
+    else{
+        std::cout << "We recommend watching " << nextWatchable->toString() <<
+                                                 ", continue watching? [y/n]";
+        _nextWatchableId = nextWatchable->getId();
+    }
+
+    complete();
+}
+
+int Watch::getNextWatchableId() const
+{
+    return _nextWatchableId;
+}
+
+std::string Watch::toString() const {
+    return "Watch "+getStatusString();
+}
 
 void Exit::act(Session& sess)
 {

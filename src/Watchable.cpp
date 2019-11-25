@@ -6,7 +6,7 @@ Watchable::Watchable(long id, int length,
 : id(id), length(length), tags(tags){}
 
 // auxillary to avoid code duplication
-const std::string Watchable::getTagsString() const 
+const std::string Watchable::getTagsString() const
 {
     std::string totalString = "[";
     for(auto tag : tags)
@@ -24,6 +24,11 @@ const std::vector<std::string>& Watchable::getTags() const
 int Watchable::getLength() const
 {
     return length;
+}
+
+int Watchable::getId() const
+{
+    return id;
 }
 
 Movie::Movie(long id, const std::string& name, int length,
