@@ -43,8 +43,8 @@ std::string Movie::toString() const
 }
 
 Episode::Episode(long id, const std::string& seriesName, int length, int season,
-                 int episode, const std::vector<std::string>& tags)
-: Episode(id, seriesName, length, season, episode, id+1, tags)
+                 int episode, const std::vector<std::string>& tags):
+                 Episode(id, seriesName, length, season, episode, id+1, tags)
 {}
 
 std::string Episode::toString() const

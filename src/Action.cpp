@@ -10,9 +10,17 @@ ActionStatus BaseAction::getStatus() const
 
 const std::string BaseAction::getStatusString() const
 {
-    if(status == COMPLETED) return "COMPLETED";
-    else if(status == PENDING) return "PENDING";
-    else return "ERROR: "+getErrorMsg();
+    switch (status)
+    {
+    case PENDING:
+       return "PENDING";
+    case COMPLETED:
+        return "COMPLETED";
+    case ERROR:
+        return "ERROR: "+getErrorMsg();
+    default:
+        return "Impossible";
+    }
 }
 
 void BaseAction::complete()
@@ -60,11 +68,9 @@ PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog)
 
 void PrintActionsLog::act(Session& s)
 {
-    std::string printable = "";
     for (auto i = actionsLog.rbegin(); i != actionsLog.rend(); ++i ) {
-            printable += (*i)->toString() + "\n";
+            std::cout << (*i)->toString() + "\n";
     }
-    std::cout << printable;
     complete();
 }
 
@@ -73,7 +79,7 @@ std::string PrintActionsLog::toString() const
     return "Log "+getStatusString();
 }
 
-//clones
+// Clones for polymorphic copying
 
 BaseAction* CreateUser::clone()
 {

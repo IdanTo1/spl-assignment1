@@ -2,7 +2,10 @@
 #include <fstream>
 
 Session::Session(const std::string &configFilePath)
-: content(std::vector<Watchable*>()), actionsLog(std::vector<BaseAction*>()), userMap(std::unordered_map<std::string, User*>()), activeUser(nullptr)
+: content(std::vector<Watchable*>()),
+ actionsLog(std::vector<BaseAction*>()),
+ userMap(std::unordered_map<std::string, User*>()),
+ activeUser(nullptr)
 {
     this->fillContentFromJson(configFilePath);
 }
@@ -72,20 +75,20 @@ const std::unordered_map<std::string,User*>& Session::getUsers() const
     return userMap;
 }
 
-void Session::addUser(User* user)
+void Session::addToUserMap(User* user)
 {
     //Assuming this function is called after checking whether the addition is legal
     userMap[user->getName()] = user;
 }
 
 template<typename T>
-void Session::cleanIterable(T& toDelete) //T should be iterable
+void Session::cleanIterable(T* toDelete) //T should be iterable
 {
-    for(auto w: toDelete)
+    for(auto w: *toDelete)
     {
         delete w;
     }
-    delete &toDelete;
+    delete toDelete;
 }
 
 void Session::cleanUserMap()
@@ -99,50 +102,50 @@ void Session::cleanUserMap()
 void Session::clean()
 {
     activeUser = nullptr;
-    cleanIterable(content);
-    cleanIterable(actionsLog);
+    cleanIterable(&content);
+    cleanIterable(&actionsLog);
     cleanUserMap();
 }
 
-Session::Session(const Session &s)
-: content(s.content), actionsLog(s.actionsLog), userMap(s.userMap),
- activeUser(userMap[s.activeUser->getName()]) 
+Session::Session(const Session &rhs)
+: content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
+ activeUser(userMap[rhs.activeUser->getName()]) 
 {}
 
 Session::~Session()
 {
-    clean();
+    this->clean();
 }
 
-Session& Session::operator=(const Session& s)
+Session& Session::operator=(const Session& rhs)
 {
-    if(this != &s)
+    if(this != &rhs)
     {
-        clean();
-        this->content = s.content;
-        this->userMap = s.userMap;
-        this->actionsLog = s.actionsLog;
-        this->activeUser = userMap[s.activeUser->getName()];
+        this->clean();
+        this->content = rhs.content;
+        this->userMap = rhs.userMap;
+        this->actionsLog = rhs.actionsLog;
+        this->activeUser = userMap[rhs.activeUser->getName()];
     }
     return *this;
 }
 
-Session::Session(Session && s)
-: content(s.content), actionsLog(s.actionsLog), userMap(s.userMap),
- activeUser(userMap[s.activeUser->getName()])
+Session::Session(Session && rhs)
+: content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
+ activeUser(userMap[rhs.activeUser->getName()])
 {
-   purgeSession(s);
+   purgeSession(rhs);
 }
 
-Session& Session::operator=(Session && s)
+Session& Session::operator=(Session && rhs)
 {
-    if(this != &s)
+    if(this != &rhs)
     {
-        clean();
-        this->content = s.content;
-        this->actionsLog = s.actionsLog;
-        this->userMap = s.userMap;
-        purgeSession(s);
+        this->clean();
+        this->content = rhs.content;
+        this->actionsLog = rhs.actionsLog;
+        this->userMap = rhs.userMap;
+        purgeSession(rhs);
     }
     return *this;
 }
