@@ -1,11 +1,11 @@
 #include "../include/Session.h"
 #include <fstream>
 
-Session::Session(const std::string &configFilePath)
-: content(std::vector<Watchable*>()),
- actionsLog(std::vector<BaseAction*>()),
- userMap(std::unordered_map<std::string, User*>()),
- activeUser(nullptr)
+Session::Session(const std::string &configFilePath):
+    content(std::vector<Watchable*>()),
+    actionsLog(std::vector<BaseAction*>()),
+    userMap(std::unordered_map<std::string, User*>()),
+    activeUser(nullptr)
 {
     this->fillContentFromJson(configFilePath);
 }
