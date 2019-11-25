@@ -26,7 +26,6 @@ public:
     Session& operator=(const Session& rhs);
     Session(Session&& rhs);
     Session& operator=(Session&& rhs);
-    void purgeSession(Session& s);
     void addToUserMap(User* user);
     const std::unordered_map<std::string,User*>& getUsers() const;
 private:

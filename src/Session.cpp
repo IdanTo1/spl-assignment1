@@ -133,33 +133,7 @@ Session& Session::operator=(const Session& rhs)
     return *this;
 }
 
-Session::Session(Session && rhs)
-: content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
- activeUser(userMap[rhs.activeUser->getName()])
-{
-   purgeSession(rhs);
-}
+Session::Session(Session && rhs) = default;
 
-Session& Session::operator=(Session && rhs)
-{
-    if(this != &rhs)
-    {
-        this->clean();
-        this->content = rhs.content;
-        this->actionsLog = rhs.actionsLog;
-        this->userMap = rhs.userMap;
-        purgeSession(rhs);
-    }
-    return *this;
-}
 
-void Session::purgeSession(Session& s)
-{
-     /* Since the vectors are held by value we have to give it an empty one,
-        which will be quickly deleted anyway
-    */
-    s.content = std::vector<Watchable*>();
-    s.actionsLog = std::vector<BaseAction*>();
-    s.userMap = std::unordered_map<std::string, User*>();
-    s.activeUser = nullptr;
-}
+Session& Session::operator=(Session && rhs) = default;
