@@ -8,6 +8,26 @@ Session::Session(const std::string &configFilePath):
     activeUser(nullptr)
 {
     this->fillContentFromJson(configFilePath);
+    User* defaultUser = new LengthRecommenderUser("default");
+    userMap["default"] = defaultUser;
+    activeUser = defaultUser;
+}
+
+Session::~Session()
+{
+    this->clean();
+}
+
+void Session::start() {
+    // activeUser = userMap["default"]; //TODO check in forum
+    std::string actionString;
+    do {
+        actionString = std::getline(std::cin, actionString);
+        actionString.split //TODO
+        ActionStringsEnum action = strToEnum(actionParams[0]);
+    }
+    while (ActionStringsEnum != exit);
+
 }
 
 std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
@@ -123,11 +143,6 @@ Session::Session(const Session &rhs)
 : content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
  activeUser(userMap[rhs.activeUser->getName()])
 {}
-
-Session::~Session()
-{
-    this->clean();
-}
 
 void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
 {

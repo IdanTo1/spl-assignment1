@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <iostream>
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
@@ -13,6 +14,18 @@
 
 class User;
 class Watchable;
+
+enum ActionStringsEnum{
+    createuser,
+    changeuser,
+    deleteuser,
+    dupuser,
+    content,
+    watchhist,
+    watch,
+    log,
+    exit
+};
 
 class Session{
 public:
