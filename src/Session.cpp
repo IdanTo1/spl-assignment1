@@ -41,10 +41,13 @@ void Session::fillContentFromJson(const std::string &configFilePath)
     {
         for(uint i = 0; i < seriesDesc["seasons"].size(); i++)
         {
-            for(uint j = 0; j < seriesDesc["seasons"][i]; j++)
+            for(uint j = 0; j < seriesDesc["seasons"][i].size(); j++)
             {
                 int nextEpisodeId = currentId+1;
-                //json int's .size() returns the integer
+                /* json operator[] returns a json object, which in this case represents a number
+                    The .size() function isi therefore implemented in a way that returns
+                    the number represented by the json object
+                */
                 if(j == seriesDesc["seasons"][i].size()-1 && i==seriesDesc["seasons"].size()-1)
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
