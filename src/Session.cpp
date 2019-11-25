@@ -21,7 +21,7 @@ std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
 
 void Session::fillContentFromJson(const std::string &configFilePath)
 {
-    content = std::vector<Watchable*>(); 
+    content = std::vector<Watchable*>();
     std::ifstream stream(configFilePath);
     nlohmann::json contentJson;
     stream >> contentJson;
@@ -59,13 +59,17 @@ void Session::fillContentFromJson(const std::string &configFilePath)
                 currentId++;
             }
         }
-    } 
+    }
 }
 
 
 const User& Session::getActiveUser() const
 {
     return *activeUser;
+}
+
+void Session::setActiveUser(User& newUser) {
+    activeUser = &newUser;
 }
 
 const std::vector<Watchable*>& Session::getContent() const
@@ -82,6 +86,11 @@ void Session::addToUserMap(User* user)
 {
     //Assuming this function is called after checking whether the addition is legal
     userMap[user->getName()] = user;
+}
+
+void Session::deleteUserFromMap(const std::string &name) {
+    delete userMap[name];
+    userMap.erase(name);
 }
 
 template<typename T>
@@ -112,7 +121,7 @@ void Session::clean()
 
 Session::Session(const Session &rhs)
 : content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
- activeUser(userMap[rhs.activeUser->getName()]) 
+ activeUser(userMap[rhs.activeUser->getName()])
 {}
 
 Session::~Session()

@@ -22,11 +22,13 @@ public:
 
     const std::vector<Watchable*>& getContent() const;
     const User& getActiveUser() const;
+    void setActiveUser(User&);
     Session(const Session& rhs);
     Session& operator=(const Session& rhs);
     Session(Session&& rhs);
     Session& operator=(Session&& rhs);
     void addToUserMap(User* user);
+    void deleteUserFromMap(const std::string& name);
     const std::unordered_map<std::string,User*>& getUsers() const;
 private:
     std::vector<Watchable*> content;
