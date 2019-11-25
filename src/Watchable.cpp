@@ -42,6 +42,10 @@ std::string Movie::toString() const
     return name+" "+std::to_string(getLength())+" minutes "+getTagsString();
 }
 
+/* A second constructor for Episode is implemented with an extra paramter.
+    The latter is stronger and can be called here instead of
+    implementing the entire thing again
+*/
 Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  int episode, const std::vector<std::string>& tags):
                  Episode(id, seriesName, length, season, episode, id+1, tags)
