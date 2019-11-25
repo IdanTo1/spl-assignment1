@@ -33,3 +33,6 @@
 
 #Clion files
 .idea/*
+
+#all output files
+bin/*

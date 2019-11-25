@@ -16,7 +16,7 @@ const std::string Watchable::getTagsString() const
     return totalString+"]";
 }
 
-const std::vector<std::string> Watchable::getTags() const
+const std::vector<std::string>& Watchable::getTags() const
 {
     return this->tags;
 }
