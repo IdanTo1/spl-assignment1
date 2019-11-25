@@ -133,7 +133,7 @@ void PrintActionsLog::act(Session& s)
 
 std::string PrintActionsLog::toString() const
 {
-    return "Log "+getStatusString();
+    return "PrintActionsLog "+getStatusString();
 }
 
 // Clones for polymorphic copying
