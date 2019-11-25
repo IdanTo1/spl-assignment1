@@ -19,13 +19,15 @@ public:
     Session(const std::string &configFilePath);
     ~Session();
     void start();
+
     const std::vector<Watchable*>& getContent() const;
     const User& getActiveUser() const;
-    Session(const Session& s);
-    Session& operator=(const Session& s);
-    Session(Session&& s);
-    Session& operator=(Session&& s);
-    void purgeSession(Session&& s);
+    Session(const Session& rhs);
+    Session& operator=(const Session& rhs);
+    Session(Session&& rhs);
+    Session& operator=(Session&& rhs);
+    void addToUserMap(User* user);
+    const std::unordered_map<std::string,User*>& getUsers() const;
 private:
     std::vector<Watchable*> content;
     std::vector<BaseAction*> actionsLog;
@@ -37,5 +39,6 @@ private:
     template<typename T>
     void cleanIterable(T* toDelete);
     void clean();
+    void cleanUserMap();
 };
 #endif
