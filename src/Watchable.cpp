@@ -74,12 +74,12 @@ Episode::Episode(long id, const std::string& seriesName,int length, int season,
      episode(episode), nextEpisodeId(nextEpisodeId)
 {}
 
-Watchable* Episode::clone()
+Watchable* Episode::clone() const
 {
     return new Episode(*this);
 }
 
-Watchable* Movie::clone()
+Watchable* Movie::clone() const
 {
     return new Movie(*this);
 }
