@@ -11,7 +11,6 @@ enum ActionStatus{
 	PENDING, COMPLETED, ERROR
 };
 
-const std::string NO_RECOMMENDATION_ERR = "No recommendation was found";
 const std::string USER_EXISTS_ERR = "User already exists";
 const std::string INVALID_ALG_ERR = "Invalid algorithm was given";
 const std::string USER_DOESNT_EXISTS_ERR = "Requested user does not exist";

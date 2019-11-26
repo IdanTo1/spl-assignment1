@@ -135,7 +135,7 @@ void PrintWatchHistory::act(Session& sess) {
     for(auto watchable: history)
     {
         // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toStringWOTags() << std::endl;
+        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toStringName() << std::endl;
     }
     complete();
 }
@@ -161,7 +161,6 @@ void Watch::act(Session& sess) {
         nextWatchable = activeUser.getRecommendation(sess);
     }
     if(nextWatchable == nullptr) {
-        error(NO_RECOMMENDATION_ERR);
         return;
     }
     else{

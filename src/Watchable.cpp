@@ -41,14 +41,14 @@ Watchable* Movie::getNextWatchable(Session& s) const
   return nullptr;
 }
 
-std::string Movie::toStringWOTags() const
+std::string Movie::toStringName() const
 {
     // According to the "Inglorious Basterds 153 minutes" format
-    return name+" "+std::to_string(getLength())+" minutes ";
+    return name+" ";
 }
 
 std::string Movie::toString() const {
-    return toStringWOTags() + getTagsString();
+    return toStringName() + std::to_string(getLength())+" minutes " + getTagsString();
 }
 
 /* A second constructor for Episode is implemented with an extra paramter.
@@ -60,14 +60,14 @@ Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  Episode(id, seriesName, length, season, episode, id+1, tags)
 {}
 
-std::string Episode::toStringWOTags() const
+std::string Episode::toStringName() const
 {
     // According to the "Game of Thrones S01E02 56 minutes" format
-    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode)+" "+std::to_string(getLength())+" minutes ";
+    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode);
 }
 
 std::string Episode::toString() const {
-    return toStringWOTags() + getTagsString();
+    return toStringName() + " "+std::to_string(getLength())+" minutes " + getTagsString();
 }
 
 Watchable* Episode::getNextWatchable(Session& s) const
