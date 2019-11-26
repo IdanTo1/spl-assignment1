@@ -17,14 +17,68 @@ Session::~Session()
 {
     this->clean();
 }
+void Session::split(std::string &actionString, std::vector <string> &actionParams, std::string delimiter) {
+    size_t start = 0U;
+    size_t end = actionString.find(delimiter);
+    while (end != std::string::npos)
+    {
+        actionParams.push_back(s.substr(start, end - start));
+        start = end + delimiter.length();
+        end = s.find(delimiter, start);
+    }
+
+}
+
+ActionStringsEnum Session::strToEnum(const std::string &actionString) {
+    if (actionString == "createuser")
+        return createuser;
+    else if (actionString == "changeuser")
+        return changeuser;
+    else if (actionString == "deleteuser")
+        return deleteuser;
+    else if (actionString == "dupuser")
+        return dupuser;
+    else if (actionString == "content")
+        return content;
+    else if (actionString == "watchlist")
+        return watchlist;
+    else if (actionString == "watch")
+        return watch;
+    else if (actionString == "log")
+        return log;
+    else if (actionString == "exit")
+        return exit;
+}
 
 void Session::start() {
     // activeUser = userMap["default"]; //TODO check in forum
     std::string actionString;
+    std::vector<std::string> actionParams;
     do {
         actionString = std::getline(std::cin, actionString);
-        actionString.split //TODO
+        actionParams.clear();
+        split(actionString, actionParams, ACTION_PARAMS_DELIMITER);
         ActionStringsEnum action = strToEnum(actionParams[0]);
+
+        switch (action) {
+            case createuser:
+
+            case changeuser:
+
+            case deleteuser:
+
+            case dupuser:
+
+            case content:
+
+            case watchlist:
+
+            case watch:
+
+            case log:
+
+            case exit:
+        }
     }
     while (ActionStringsEnum != exit);
 

@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+//#include <boost/algorithm/string.hpp> // TODO
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
@@ -21,11 +22,13 @@ enum ActionStringsEnum{
     deleteuser,
     dupuser,
     content,
-    watchhist,
+    watchlist,
     watch,
     log,
     exit
 };
+
+const std::string ACTION_PARAMS_DELIMITER = " ";
 
 class Session{
 public:
@@ -33,6 +36,8 @@ public:
     ~Session();
     void start();
 
+    void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
+    ActionStringsEnum strToEnum(const std::string& actionString);
     const std::vector<Watchable*>& getContent() const;
     const User& getActiveUser() const;
     void setActiveUser(User&);
