@@ -73,6 +73,10 @@ void ChangeActiveUser::act(Session &sess) {
     }
 }
 
+std::string ChangeActiveUser::toString() const {
+    return ("ChangeUser" + getStatusString());
+}
+
 void PrintContentList::act(Session& sess) {
     const std::vector<Watchable*>& content = sess.getContent();
     int i = 1; //Because human lists start at 1
@@ -135,11 +139,6 @@ std::string Watch::toString() const {
     return "Watch "+getStatusString();
 }
 
-std::string ChangeActiveUser::toString() const {
-    return ("ChangeUser" + getStatusString());
-}
-
-
 DeleteUser::DeleteUser(const std::string& name): BaseAction(), _userName(name) {}
 
 void DeleteUser::act(Session &sess) {
@@ -189,7 +188,8 @@ std::string Exit::toString() const {
     return "Exit "+getStatusString();
 }
 
-PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): actionsLog(actionsLog) {}
+PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): BaseAction(),
+                                                                              actionsLog(actionsLog) {}
 
 void PrintActionsLog::act(Session& s) {
     for (auto i = actionsLog.rbegin(); i != actionsLog.rend(); ++i ) {

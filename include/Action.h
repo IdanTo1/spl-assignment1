@@ -23,7 +23,7 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Session& sess)=0;
     virtual std::string toString() const=0;
-    virtual BaseAction* clone() = 0;
+    virtual BaseAction* clone() const = 0;
 protected:
     void complete();
     void error(const std::string& errorMsg);
@@ -39,7 +39,7 @@ public:
     CreateUser(const std::string& name, const std::string& recommendationAlg);
     virtual void act(Session& sess);
     virtual std::string toString() const;
-    virtual BaseAction* clone();
+    virtual BaseAction* clone() const;
 private:
     std::string _userName;
     std::string _recommendationAlg;
