@@ -14,6 +14,7 @@ public:
     virtual std::string toString() const = 0;
     virtual Watchable* getNextWatchable(Session&) const = 0;
     virtual Watchable* clone() const = 0;
+    virtual std::string toStringWOTags() const = 0;
     const std::string getTagsString() const;
     int getLength() const;
     const std::vector<std::string>& getTags() const;
@@ -30,6 +31,7 @@ public:
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
     virtual Watchable* clone() const;
+    virtual std::string toStringWOTags() const;
 private:
     std::string name;
 };
@@ -42,6 +44,7 @@ public:
     virtual Watchable* getNextWatchable(Session&) const;
     Episode(long id, const std::string& seriesName,int length, int season, int episode, int nextEpisodeId, const std::vector<std::string>& tags);
     virtual Watchable* clone() const;
+    virtual std::string toStringWOTags() const;
 private:
     std::string seriesName;
     int season;

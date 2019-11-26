@@ -119,11 +119,10 @@ std::string DuplicateUser::toString() const {
 
 void PrintContentList::act(Session& sess) {
     const std::vector<Watchable*>& content = sess.getContent();
-    int i = 1; //Because human lists start at 1
     for(auto w: content)
     {
-        std::cout << std::to_string(i) << w->toString() << std::endl;
-        i++;
+        // +1 for easier readabillity, where lists start at 1
+        std::cout << std::to_string(w->getId()+1) << ". " << w->toString() << std::endl;
     }
 }
 
@@ -133,11 +132,10 @@ std::string PrintContentList::toString() const {
 
 void PrintWatchHistory::act(Session& sess) {
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
-    int i = 1; //Because human lists start at 1
     for(auto w: history)
     {
-        std::cout << std::to_string(i) << w->toString() << std::endl;
-        i++;
+        // +1 for easier readabillity, where lists start at 1
+        std::cout << std::to_string(w->getId()+1) << ". " << w->toStringWOTags() << std::endl;
     }
     complete();
 }
@@ -174,7 +172,7 @@ void Watch::act(Session& sess) {
     complete();
 }
 
-int Watch::getNextWatchableId() const
+long Watch::getNextWatchableId() const
 {
     return _nextWatchableId;
 }

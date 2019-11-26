@@ -99,10 +99,10 @@ public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
-	int getNextWatchableId() const;
+	long getNextWatchableId() const;
 private:
 	Watchable& _toWatch;
-	int _nextWatchableId;
+	long _nextWatchableId;
 };
 
 

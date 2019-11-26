@@ -41,10 +41,14 @@ Watchable* Movie::getNextWatchable(Session& s) const
   return nullptr;
 }
 
-std::string Movie::toString() const
+std::string Movie::toStringWOTags() const
 {
-    // According to the "Inglorious Basterds 153 minutes [War, Western]" format
-    return name+" "+std::to_string(getLength())+" minutes "+getTagsString();
+    // According to the "Inglorious Basterds 153 minutes" format
+    return name+" "+std::to_string(getLength())+" minutes ";
+}
+
+std::string Movie::toString() const {
+    return toStringWOTags() + getTagsString();
 }
 
 /* A second constructor for Episode is implemented with an extra paramter.
@@ -56,10 +60,14 @@ Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  Episode(id, seriesName, length, season, episode, id+1, tags)
 {}
 
-std::string Episode::toString() const
+std::string Episode::toStringWOTags() const
 {
-    // According to the "Game of Thrones S01E02 56 minutes [Fantasy, Drama]" format
-    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode)+" "+std::to_string(getLength())+" minutes "+getTagsString();
+    // According to the "Game of Thrones S01E02 56 minutes" format
+    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode)+" "+std::to_string(getLength())+" minutes ";
+}
+
+std::string Episode::toString() const {
+    return toStringWOTags() + getTagsString();
 }
 
 Watchable* Episode::getNextWatchable(Session& s) const
