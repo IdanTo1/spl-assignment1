@@ -89,7 +89,7 @@ Watch::Watch(Watchable& toWatch): BaseAction(),
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
     std::cout << "Watching " << _toWatch.toString();
-    Watchable* nextWatchable = _toWatch.getNextWatchable();
+    Watchable* nextWatchable = _toWatch.getNextWatchable(sess);
     //If the Watchable returns a nullptr as the next in order
     if(nextWatchable == nullptr){
         activeUser.addToHistory(_toWatch);
