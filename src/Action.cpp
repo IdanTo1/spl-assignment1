@@ -119,10 +119,10 @@ std::string DuplicateUser::toString() const {
 
 void PrintContentList::act(Session& sess) {
     const std::vector<Watchable*>& content = sess.getContent();
-    for(auto w: content)
+    for(auto watchable : content)
     {
         // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(w->getId()+1) << ". " << w->toString() << std::endl;
+        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toString() << std::endl;
     }
 }
 
@@ -132,10 +132,10 @@ std::string PrintContentList::toString() const {
 
 void PrintWatchHistory::act(Session& sess) {
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
-    for(auto w: history)
+    for(auto watchable: history)
     {
         // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(w->getId()+1) << ". " << w->toStringWOTags() << std::endl;
+        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toStringWOTags() << std::endl;
     }
     complete();
 }
@@ -150,8 +150,9 @@ Watch::Watch(Watchable& toWatch): BaseAction(),
 
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
-    std::cout << "Watching " << _toWatch.toString();
+    std::cout << "Watching " << _toWatch.toString() << std::endl;
     activeUser.addToHistory(_toWatch);
+    complete(); //Because this is the end of watching the content
     Watchable* nextWatchable = _toWatch.getNextWatchable(sess);
     /* If the Watchable returns a nullptr as the next in order then we ask
      the user object for recommendation
@@ -165,11 +166,9 @@ void Watch::act(Session& sess) {
     }
     else{
         std::cout << "We recommend watching " << nextWatchable->toString() <<
-                                                 ", continue watching? [y/n]";
+                                                 ", continue watching? [y/n]" << std::endl;
         _nextWatchableId = nextWatchable->getId();
     }
-
-    complete();
 }
 
 long Watch::getNextWatchableId() const
@@ -186,7 +185,7 @@ PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): Ba
 
 void PrintActionsLog::act(Session& s) {
     for (auto action: _actionsLog) {
-            std::cout << action->toString() + "\n";
+            std::cout << action->toString() << std::endl;
     }
     complete();
 }
