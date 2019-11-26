@@ -24,11 +24,13 @@ enum ActionStringsEnum{
     content,
     watchlist,
     watch,
-    log,
-    exit
+    logActions, //because log exists in <vector>.
+    exitLoop // because exit exists in <unordered_map>.
 };
 
 const std::string ACTION_PARAMS_DELIMITER = " ";
+const std::string CONTINUE = "y";
+const int NOTHING_TO_RECCOMAND = -1;
 
 class Session{
 public:

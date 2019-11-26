@@ -51,37 +51,66 @@ ActionStringsEnum Session::strToEnum(const std::string &actionString) {
 }
 
 void Session::start() {
-    // activeUser = userMap["default"]; //TODO check in forum
     std::string actionString;
     std::vector<std::string> actionParams;
     do {
-        actionString = std::getline(std::cin, actionString);
+        std::getline(std::cin, actionString);
         actionParams.clear();
         split(actionString, actionParams, ACTION_PARAMS_DELIMITER);
         ActionStringsEnum action = strToEnum(actionParams[0]);
-
+        BaseAction* actionObj;
         switch (action) {
             case createuser:
-
+                actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case changeuser:
-
+                actionObj = new ChangeActiveUser(actionParams[1]);
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case deleteuser:
-
+                actionObj = new DeleteUser(actionParams[1]);
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case dupuser:
-
+                actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case content:
-
+                actionObj = new PrintContentList();
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case watchlist:
-
+                actionObj = new PrintWatchHistory();
+                actionsLog.push(actionObj);
+                actionObj->act(this);
             case watch:
-
-            case log:
-
-            case exit:
+                int nextId = int(actionParams[1]);
+                std::string continueWatch = CONTINUE;
+                do {
+                    Watch watchObj = new Watch(content[nextId]);
+                    actionsLog.push(watchObj);
+                    watchObj->act(this);
+                    //check for user input, for continue watching.
+                    std::getline(std::cin, continueWatch);
+                    // check for implicit new watch object (user said yes)
+                    if (continueWatch != CONTINUE) {
+                        break;
+                    }
+                    //make sure there is next watchable
+                    while ((nextId = watchObj.getNextWatchableId()) != NOTHING_TO_RECCOMAND);
+                    case logActions:
+                        actionObj = new PrintActionsLog(actionsLog);
+                    actionObj->act(this); //act first because log shouldn't be printed to log
+                    actionsLog.push(actionObj);
+                    case exitLoop:
+                        actionObj = new PrintActionsLog(actionsLog);
+                    actionsLog.push(actionObj);
+                    actionObj->act(this);
+                }
         }
     }
-    while (ActionStringsEnum != exit);
-
+    while (action != exitLoop);
 }
 
 std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
@@ -185,8 +214,7 @@ void Session::cleanUserMap()
     }
 }
 
-void Session::clean()
-{
+void Session::clean() {
     activeUser = nullptr;
     cleanIterable(&content);
     cleanIterable(&actionsLog);
