@@ -15,6 +15,7 @@ const std::string NO_RECOMMENDATION_ERR = "No recommendation was found";
 const std::string USER_EXISTS_ERR = "User already exists";
 const std::string INVALID_ALG_ERR = "Invalid algorithm was given";
 const std::string USER_DOESNT_EXISTS_ERR = "Requested user does not exist";
+const std::string NO_WATCHABLE_ERR = "No Watchable content was given";
 
 class BaseAction{
 public:
@@ -112,7 +113,7 @@ public:
 	virtual BaseAction* clone() const;
 	PrintActionsLog(const std::vector<BaseAction*>& actionsLog);
 private:
-	const std::vector<BaseAction*>& actionsLog;
+	const std::vector<BaseAction*>& _actionsLog;
 };
 
 class Exit : public BaseAction {

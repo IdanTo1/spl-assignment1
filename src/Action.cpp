@@ -163,6 +163,7 @@ void Watch::act(Session& sess) {
     }
     if(nextWatchable == nullptr)
         error(NO_RECOMMENDATION_ERR);
+        return;
     else{
         std::cout << "We recommend watching " << nextWatchable->toString() <<
                                                  ", continue watching? [y/n]";
@@ -182,11 +183,11 @@ std::string Watch::toString() const {
 }
 
 PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): BaseAction(),
-                                                                              actionsLog(actionsLog) {}
+                                                                              _actionsLog(actionsLog) {}
 
 void PrintActionsLog::act(Session& s) {
-    for (auto i = actionsLog.rbegin(); i != actionsLog.rend(); ++i ) {
-            std::cout << (*i)->toString() + "\n";
+    for (auto action: _actionsLog) {
+            std::cout << action->toString() + "\n";
     }
     complete();
 }
