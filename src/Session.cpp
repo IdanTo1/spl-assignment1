@@ -19,8 +19,7 @@ std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
     return tags;
 }
 
-void Session::fillContentFromJson(const std::string &configFilePath)
-{
+void Session::fillContentFromJson(const std::string &configFilePath) {
     std::ifstream stream(configFilePath);
     nlohmann::json contentJson;
     stream >> contentJson;
@@ -67,6 +66,10 @@ User& Session::getActiveUser()
     return *activeUser;
 }
 
+void Session::setActiveUser(User& newUser) {
+    activeUser = &newUser;
+}
+
 const std::vector<Watchable*>& Session::getContent() const
 {
     return content;
@@ -81,6 +84,11 @@ void Session::addToUserMap(User* user)
 {
     //Assuming this function is called after checking whether the addition is legal
     userMap[user->getName()] = user;
+}
+
+void Session::deleteUserFromMap(const std::string &name) {
+    delete userMap[name];
+    userMap.erase(name);
 }
 
 template<typename T>
@@ -119,20 +127,38 @@ Session::~Session()
     this->clean();
 }
 
+void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
+{
+    for(auto u: other)
+    {
+        *(this->userMap[u.first]) = *(u.second);
+    }
+}
+
+//Assuming that ourV is empty
+template<typename T>
+void Session::deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV)
+{
+    for(auto x: newV)
+    {
+        //create a new T object using T's copy constructor
+        ourV.push_back(x->clone());
+    }
+}
+
 Session& Session::operator=(const Session& rhs)
 {
     if(this != &rhs)
     {
-        this->clean();
-        this->content = rhs.content;
-        this->userMap = rhs.userMap;
-        this->actionsLog = rhs.actionsLog;
+        clean();
+        this->deepCopyPointerVector(rhs.content, this->content);
+        this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
+        this->deepCopyUsers(rhs.userMap);
         this->activeUser = userMap[rhs.activeUser->getName()];
     }
     return *this;
 }
 
 Session::Session(Session && rhs) = default;
-
 
 Session& Session::operator=(Session && rhs) = default;

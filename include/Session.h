@@ -22,11 +22,13 @@ public:
 
     const std::vector<Watchable*>& getContent() const;
     User& getActiveUser();
+    void setActiveUser(User&);
     Session(const Session& rhs);
     Session& operator=(const Session& rhs);
     Session(Session&& rhs);
     Session& operator=(Session&& rhs);
     void addToUserMap(User* user);
+    void deleteUserFromMap(const std::string& name);
     const std::unordered_map<std::string,User*>& getUsers() const;
 private:
     std::vector<Watchable*> content;
@@ -36,9 +38,12 @@ private:
 
     std::vector<std::string> extractTags(nlohmann::json& tagList);
     void fillContentFromJson(const std::string &configFilePath);
-    template<typename T>
-    void cleanIterable(T* toDelete);
     void clean();
     void cleanUserMap();
+    template <typename T>
+    void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
+    void deepCopyUsers(const std::unordered_map<std::string, User*>& other);
+    template <typename T>
+    void cleanIterable(T* toDelete);
 };
 #endif
