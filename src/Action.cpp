@@ -161,9 +161,10 @@ void Watch::act(Session& sess) {
     if(nextWatchable == nullptr){
         nextWatchable = activeUser.getRecommendation(sess);
     }
-    if(nextWatchable == nullptr)
+    if(nextWatchable == nullptr) {
         error(NO_RECOMMENDATION_ERR);
         return;
+    }
     else{
         std::cout << "We recommend watching " << nextWatchable->toString() <<
                                                  ", continue watching? [y/n]";
