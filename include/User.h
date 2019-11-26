@@ -15,6 +15,7 @@ class User{
 public:
     User(const std::string& name);
     virtual ~User();
+    virtual User* clone() const = 0;
     virtual Watchable* getRecommendation(Session& s) = 0;
     std::string getName() const;
     std::vector<Watchable*> get_history() const;
@@ -30,6 +31,7 @@ private:
 class LengthRecommenderUser : public User {
 public:
     LengthRecommenderUser(const std::string& name);
+    virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
     virtual void addToHistory(Watchable&);
 private:
@@ -40,6 +42,7 @@ private:
 class RerunRecommenderUser : public User {
 public:
     RerunRecommenderUser(const std::string& name);
+    virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
 private:
     int _lastRecIdx; // a field containing the last watchable that was recommended to the user.
@@ -48,6 +51,7 @@ private:
 class GenreRecommenderUser : public User {
 public:
     GenreRecommenderUser(const std::string& name);
+    virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
     virtual void addToHistory(Watchable&);
 private:
