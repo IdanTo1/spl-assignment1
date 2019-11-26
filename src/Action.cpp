@@ -82,13 +82,19 @@ std::string PrintWatchHistory::toString() const {
     return "PrintWatchHistory " + getStatusString();
 }
 
-Watch::Watch(Watchable& toWatch): BaseAction(), _toWatch(toWatch), _nextWatchableId(-1) {}
+Watch::Watch(Watchable& toWatch): BaseAction(),
+                                 _toWatch(toWatch),
+                                  _nextWatchableId(-1) {}
 
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
     std::cout << "Watching " << _toWatch.toString();
-    activeUser.addToHistory(_toWatch);
-    Watchable* nextWatchable = activeUser.getRecommendation(sess);
+    Watchable* nextWatchable = _toWatch.getNextWatchable();
+    //If the Watchable returns a nullptr as the next in order
+    if(nextWatchable == nullptr){
+        activeUser.addToHistory(_toWatch);
+        nextWatchable = activeUser.getRecommendation(sess);
+    }
     if(nextWatchable == nullptr)
         error(NO_RECOMMENDATION_ERR);
     else{
