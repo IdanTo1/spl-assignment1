@@ -153,10 +153,12 @@ Watch::Watch(Watchable& toWatch): BaseAction(),
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
     std::cout << "Watching " << _toWatch.toString();
+    activeUser.addToHistory(_toWatch);
     Watchable* nextWatchable = _toWatch.getNextWatchable(sess);
-    //If the Watchable returns a nullptr as the next in order
+    /* If the Watchable returns a nullptr as the next in order then we ask
+     the user object for recommendation
+     */
     if(nextWatchable == nullptr){
-        activeUser.addToHistory(_toWatch);
         nextWatchable = activeUser.getRecommendation(sess);
     }
     if(nextWatchable == nullptr)
