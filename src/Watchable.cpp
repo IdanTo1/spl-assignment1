@@ -6,7 +6,7 @@ Watchable::Watchable(long id, int length,
 : id(id), length(length), tags(tags){}
 
 // auxillary to avoid code duplication
-const std::string Watchable::getTagsString() const 
+const std::string Watchable::getTagsString() const
 {
     std::string totalString = "[";
     for(auto tag : tags)
@@ -26,6 +26,11 @@ int Watchable::getLength() const
     return length;
 }
 
+int Watchable::getId() const
+{
+    return id;
+}
+
 Movie::Movie(long id, const std::string& name, int length,
              const std::vector<std::string>& tags)
 : Watchable(id, length, tags), name(name)
@@ -36,10 +41,14 @@ Watchable* Movie::getNextWatchable(Session& s) const
   return nullptr;
 }
 
-std::string Movie::toString() const
+std::string Movie::toStringName() const
 {
-    // According to the "Inglorious Basterds 153 minutes [War, Western]" format
-    return name+" "+std::to_string(getLength())+" minutes "+getTagsString();
+    // According to the "Inglorious Basterds 153 minutes" format
+    return name+" ";
+}
+
+std::string Movie::toString() const {
+    return toStringName() + std::to_string(getLength())+" minutes " + getTagsString();
 }
 
 /* A second constructor for Episode is implemented with an extra paramter.
@@ -51,10 +60,14 @@ Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  Episode(id, seriesName, length, season, episode, id+1, tags)
 {}
 
-std::string Episode::toString() const
+std::string Episode::toStringName() const
 {
-    // According to the "Game of Thrones S01E02 56 minutes [Fantasy, Drama]" format
-    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode)+" "+std::to_string(getLength())+" minutes "+getTagsString();
+    // According to the "Game of Thrones S01E02 56 minutes" format
+    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode);
+}
+
+std::string Episode::toString() const {
+    return toStringName() + " "+std::to_string(getLength())+" minutes " + getTagsString();
 }
 
 Watchable* Episode::getNextWatchable(Session& s) const

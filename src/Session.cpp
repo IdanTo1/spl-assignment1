@@ -61,7 +61,7 @@ void Session::fillContentFromJson(const std::string &configFilePath) {
 }
 
 
-const User& Session::getActiveUser() const
+User& Session::getActiveUser()
 {
     return *activeUser;
 }

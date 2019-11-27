@@ -21,7 +21,7 @@ public:
     void start();
 
     const std::vector<Watchable*>& getContent() const;
-    const User& getActiveUser() const;
+    User& getActiveUser();
     void setActiveUser(User&);
     Session(const Session& rhs);
     Session& operator=(const Session& rhs);
