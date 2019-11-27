@@ -1,0 +1,27 @@
+{
+    "movies": [
+      {
+        "name" : "1",
+        "length": 1,
+        "tags": ["Drama"
+        ]
+      }
+    ],
+	"tv_series":
+    [
+      {
+        "name": "1",
+        "episode_length": 60,
+        "seasons": [3, 3, 3],
+        "tags": ["Fantasy",
+                 "Drama"]
+      },
+      {
+        "name": "2",
+        "episode_length": 22,
+        "seasons": [1],
+        "tags": ["Comedy",
+                 "Romantic"]
+      }
+    ]
+  }

@@ -1,0 +1,20 @@
+{
+    "movies": [
+      {
+        "name" : "movie",
+        "length": 60,
+        "tags": ["Drama"
+        ]
+      }
+    ],
+	"tv_series":
+    [
+      {
+        "name": "series",
+        "episode_length": 60,
+        "seasons": [3, 3, 6],
+        "tags": ["Fantasy",
+                 "Drama"]
+      }
+    ]
+  }

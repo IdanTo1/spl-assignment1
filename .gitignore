@@ -28,7 +28,7 @@
 
 # Executables
 *.exe
-*.out
+# *.out
 *.app
 
 #Clion files
@@ -37,4 +37,4 @@
 #all output files
 bin/*
 #project files
-*.json
+# *.json

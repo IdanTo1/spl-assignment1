@@ -1,0 +1,33 @@
+{
+    "movies": [
+      {
+        "name" : "10",
+        "length": 10,
+        "tags": ["Drama"
+        ]
+      },
+      {
+        "name" : "20",
+        "length": 20,
+        "tags": ["Drama",
+                 "Crime"
+        ]
+      },
+      {
+        "name" : "13",
+        "length": 13,
+        "tags": ["Action",
+                 "Crime",
+                 "Drama",
+                 "Thriller"
+        ]
+      },
+      {
+        "name" : "22",
+        "length": 22,
+        "tags": ["Crime",
+                 "Drama"
+        ]
+      }
+    ]
+  }

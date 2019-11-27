@@ -1,0 +1,59 @@
+{
+    "movies": [
+      {
+        "name" : "1",
+        "length": 1,
+        "tags": ["abb",
+				 "ab",
+				 "c"
+        ]
+      },
+	  {
+        "name" : "2",
+        "length": 1,
+        "tags": ["c"
+        ]
+      },
+	  {
+        "name" : "3",
+        "length": 1,
+        "tags": ["ab"
+        ]
+      },
+	  {
+        "name" : "4",
+        "length": 1,
+        "tags": ["abb",
+				 "c"
+        ]
+      },
+	  {
+        "name" : "5",
+        "length": 1,
+        "tags": ["d"
+        ]
+      },
+	  {
+        "name" : "6",
+        "length": 1,
+        "tags": ["d"
+        ]
+      },
+	  {
+        "name" : "7",
+        "length": 1,
+        "tags": ["d"
+        ]
+      }
+    ],
+	"tv_series":
+    [
+      {
+        "name": "8",
+        "episode_length": 60,
+        "seasons": [2],
+        "tags": ["d",
+        ]
+      }
+    ]
+  }
