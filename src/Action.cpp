@@ -136,6 +136,7 @@ void PrintContentList::act(Session& sess) {
         // +1 for easier readabillity, where lists start at 1
         std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toString() << std::endl;
     }
+    complete();
 }
 
 std::string PrintContentList::toString() const {
