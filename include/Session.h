@@ -41,7 +41,7 @@ public:
     void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
     ActionStringsEnum strToEnum(const std::string& actionString);
     const std::vector<Watchable*>& getContent() const;
-    const User& getActiveUser() const;
+    User& getActiveUser();
     void setActiveUser(User&);
     Session(const Session& rhs);
     Session& operator=(const Session& rhs);

@@ -122,9 +122,7 @@ std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
     return tags;
 }
 
-void Session::fillContentFromJson(const std::string &configFilePath)
-{
-    content = std::vector<Watchable*>();
+void Session::fillContentFromJson(const std::string &configFilePath) {
     std::ifstream stream(configFilePath);
     nlohmann::json contentJson;
     stream >> contentJson;
@@ -166,7 +164,7 @@ void Session::fillContentFromJson(const std::string &configFilePath)
 }
 
 
-const User& Session::getActiveUser() const
+User& Session::getActiveUser()
 {
     return *activeUser;
 }

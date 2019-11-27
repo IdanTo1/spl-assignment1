@@ -3,15 +3,17 @@
 
 #include <string>
 #include <iostream>
+#include "Watchable.h"
 
 class Session;
 
 enum ActionStatus{
 	PENDING, COMPLETED, ERROR
 };
+
 const std::string USER_EXISTS_ERR = "User already exists";
 const std::string INVALID_ALG_ERR = "Invalid algorithm was given";
-const std::string USER_DOESNT_EXISTS_ERR = "Requested user does not exists";
+const std::string USER_DOESNT_EXISTS_ERR = "Requested user does not exist";
 
 class BaseAction{
 public:
@@ -20,7 +22,7 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Session& sess)=0;
     virtual std::string toString() const=0;
-    virtual BaseAction* clone() = 0;
+    virtual BaseAction* clone() const = 0;
 protected:
     void complete();
     void error(const std::string& errorMsg);
@@ -36,7 +38,7 @@ public:
     CreateUser(const std::string& name, const std::string& recommendationAlg);
     virtual void act(Session& sess);
     virtual std::string toString() const;
-    virtual BaseAction* clone();
+    virtual BaseAction* clone() const;
 private:
     std::string _userName;
     std::string _recommendationAlg;
@@ -47,8 +49,7 @@ public:
     ChangeActiveUser(const std::string& name);
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
-
+	virtual BaseAction* clone() const;
 private:
     std::string _newUser;
 };
@@ -58,8 +59,7 @@ public:
     DeleteUser(const std::string& name);
 	virtual void act(Session & sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
-
+	virtual BaseAction* clone() const;
 private:
     std::string _userName;
 };
@@ -70,8 +70,7 @@ public:
     DuplicateUser(const std::string&, const std::string&);
 	virtual void act(Session & sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
-
+	virtual BaseAction* clone() const;
 private:
     const std::string _newUserName;
     const std::string _oldUserName;
@@ -81,22 +80,27 @@ class PrintContentList : public BaseAction {
 public:
 	virtual void act (Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
+	virtual BaseAction* clone() const;
 };
 
 class PrintWatchHistory : public BaseAction {
 public:
 	virtual void act (Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
+	virtual BaseAction* clone() const;
 };
 
 
 class Watch : public BaseAction {
 public:
+	Watch(Watchable& toWatch);
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
+	virtual BaseAction* clone() const;
+	long getNextWatchableId() const;
+private:
+	Watchable& _toWatch;
+	long _nextWatchableId;
 };
 
 
@@ -104,16 +108,16 @@ class PrintActionsLog : public BaseAction {
 public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
+	virtual BaseAction* clone() const;
 	PrintActionsLog(const std::vector<BaseAction*>& actionsLog);
 private:
-	const std::vector<BaseAction*>& actionsLog;
+	const std::vector<BaseAction*>& _actionsLog;
 };
 
 class Exit : public BaseAction {
 public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
-	virtual BaseAction* clone();
+	virtual BaseAction* clone() const;
 };
 #endif
