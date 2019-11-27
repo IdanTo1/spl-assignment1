@@ -146,10 +146,11 @@ PrintWatchHistory::~PrintWatchHistory() {}
 
 void PrintWatchHistory::act(Session& sess) {
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
+    int i = 1; // 1 for easier readabillity, where lists start at 1
     for(auto watchable: history)
     {
-        // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toStringName() << std::endl;
+        std::cout << std::to_string(i) << ". " << watchable->toStringName() << std::endl;
+        i++;
     }
     complete();
 }

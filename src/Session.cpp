@@ -124,7 +124,7 @@ void Session::start() {
                     break;
                 }
                 case EXIT_LOOP: {
-                    actionObj = new Exit(actionsLog);
+                    actionObj = new Exit();
                     actionsLog.push_back(actionObj);
                     actionObj->act(*this);
                     break;
