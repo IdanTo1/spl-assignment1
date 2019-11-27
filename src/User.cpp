@@ -3,6 +3,8 @@
 // User's related methods implementation.
 User::User(const std::string& name): history(), name(name) {}
 
+User::~User() {}
+
 std::string User::getName() const {
     return name;
 }
@@ -26,13 +28,14 @@ LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name
 User* LengthRecommenderUser::clone() const {
     return new LengthRecommenderUser(*this);
 }
+LengthRecommenderUser::~LengthRecommenderUser() {}
 
 void LengthRecommenderUser::updateAverage() {
     // we assume, that when updateAverage is called, new watchable has already been added to the history
     // vector. hence, we decrease by 1 history.size(), in the multiplication, and using history.size() in
     // the division
     _avgWatchableLen = (_avgWatchableLen * (history.size() - 1) + history.back()->getLength())
-            / history.size();
+                       / history.size();
 }
 
 
@@ -62,7 +65,9 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 
 // Rerun Recommender User's methods implementation.
 RerunRecommenderUser::RerunRecommenderUser(const std::string& name):
-    User(name), _lastRecIdx(-1) {}
+        User(name), _lastRecIdx(-1) {}
+
+RerunRecommenderUser::~RerunRecommenderUser() {}
 
 User* RerunRecommenderUser::clone() const{
     return new RerunRecommenderUser(*this);
@@ -79,7 +84,9 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 
 // Genre Recommender User's methods implementation.
 GenreRecommenderUser::GenreRecommenderUser(const std::string& name): User(name), _popularTagsMap(),
-                                                                        _popularTagsVector() {}
+                                                                     _popularTagsVector() {}
+
+GenreRecommenderUser::~GenreRecommenderUser() {}
 
 User* GenreRecommenderUser::clone() const{
     return new GenreRecommenderUser(*this);
@@ -115,7 +122,7 @@ Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
     std::vector<PopularTag>::iterator popularTagsIter;
     // iterate over all user's popular tags, from most to least popular.
     for (popularTagsIter = _popularTagsVector.begin(); popularTagsIter != _popularTagsVector.end();
-            popularTagsIter++) {
+         popularTagsIter++) {
         // iterate over the content, to check whether there is a Watchable containing this tag.
         for (contentIter = content.begin(); contentIter != content.end(); contentIter++) {
             // check that the watchable wasn't seen already

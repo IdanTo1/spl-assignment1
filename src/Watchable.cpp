@@ -5,6 +5,8 @@ Watchable::Watchable(long id, int length,
                      const std::vector<std::string>& tags)
 : id(id), length(length), tags(tags){}
 
+Watchable::~Watchable() {}
+
 // auxillary to avoid code duplication
 const std::string Watchable::getTagsString() const
 {
@@ -36,6 +38,8 @@ Movie::Movie(long id, const std::string& name, int length,
 : Watchable(id, length, tags), name(name)
 {}
 
+Movie::~Movie() {}
+
 Watchable* Movie::getNextWatchable(Session& s) const
 {
   return nullptr;
@@ -59,6 +63,8 @@ Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  int episode, const std::vector<std::string>& tags):
                  Episode(id, seriesName, length, season, episode, id+1, tags)
 {}
+
+Episode::~Episode() {}
 
 std::string Episode::toStringName() const
 {

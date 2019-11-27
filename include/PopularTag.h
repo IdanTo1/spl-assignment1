@@ -9,7 +9,10 @@
 
 class PopularTag {
     public:
+        PopularTag();
         PopularTag(std::string);
+        PopularTag(const PopularTag& other);
+        ~PopularTag();
         const std::string& getName() const;
         int getCount() const;
         void increaseCount();
