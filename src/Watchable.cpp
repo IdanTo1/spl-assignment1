@@ -11,9 +11,11 @@ Watchable::~Watchable() {}
 const std::string Watchable::getTagsString() const
 {
     std::string totalString = "[";
-    for(auto tag : tags)
+    for(auto tag = tags.begin(); tag!=tags.end(); tag++)
     {
-        totalString += tag;
+        if(tag == tags.end()-1)
+            totalString += *tag;
+        else totalString += (*tag)+", ";
     }
     return totalString+"]";
 }
