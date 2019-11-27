@@ -168,7 +168,7 @@ Watch::~Watch() {}
 
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
-    std::cout << "Watching " << _toWatch.toString() << std::endl;
+    std::cout << "Watching " << _toWatch.toStringName() << std::endl;
     activeUser.addToHistory(_toWatch);
     complete(); //Because this is the end of watching the content
     Watchable* nextWatchable = _toWatch.getNextWatchable(sess);
@@ -182,7 +182,7 @@ void Watch::act(Session& sess) {
         return;
     }
     else{
-        std::cout << "We recommend watching " << nextWatchable->toString() <<
+        std::cout << "We recommend watching " << nextWatchable->toStringName() <<
                                                  ", continue watching? [y/n]" << std::endl;
         _nextWatchableId = nextWatchable->getId();
     }
