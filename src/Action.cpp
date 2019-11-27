@@ -61,7 +61,7 @@ void CreateUser::act(Session& sess) {
     complete();
 }
 std::string CreateUser::toString() const {
-    return ("CreateUser" + getStatusString());
+    return ("CreateUser " + getStatusString());
 }
 
 ChangeActiveUser::ChangeActiveUser(const std::string& name): BaseAction(), _newUser(name) {}
@@ -80,7 +80,7 @@ void ChangeActiveUser::act(Session &sess) {
 }
 
 std::string ChangeActiveUser::toString() const {
-    return ("ChangeUser" + getStatusString());
+    return ("ChangeUser " + getStatusString());
 }
 
 DeleteUser::DeleteUser(const std::string& name): BaseAction(), _userName(name) {}
@@ -98,7 +98,7 @@ void DeleteUser::act(Session &sess) {
 }
 
 std::string DeleteUser::toString() const {
-    return ("DeleteUser" + getStatusString());
+    return ("DeleteUser " + getStatusString());
 }
 
 DuplicateUser::DuplicateUser(const std::string& newUser, const std::string& oldUser): BaseAction(),
@@ -123,7 +123,7 @@ void DuplicateUser::act(Session &sess) {
 }
 
 std::string DuplicateUser::toString() const {
-    return ("DuplicateUser" + getStatusString());
+    return ("DuplicateUser " + getStatusString());
 }
 
 
