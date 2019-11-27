@@ -101,7 +101,7 @@ void Session::start() {
             case WATCH: {
                 long nextId = std::stol(actionParams[1]);
                 std::string continueWatch;
-                Watch *watchObj = new Watch(*(content[nextId]));
+                Watch *watchObj = new Watch(*(content[nextId-1]));
                 actionsLog.push_back(watchObj);
                 watchObj->act(*this);
                 while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
@@ -111,7 +111,7 @@ void Session::start() {
                     if (continueWatch != CONTINUE) {
                         break;
                     }
-                    watchObj = new Watch(*(content[nextId]));
+                    watchObj = new Watch(*(content[nextId-1]));
                     actionsLog.push_back(watchObj);
                     watchObj->act(*this);
                 }
