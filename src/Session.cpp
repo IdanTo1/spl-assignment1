@@ -41,7 +41,7 @@ ActionStringsEnum Session::strToEnum(const std::string &actionString) {
         return DUP_USER;
     else if (actionString == "content")
         return LIST_CONTENT;
-    else if (actionString == "watchlist")
+    else if (actionString == "watchhist")
         return WATCH_LIST;
     else if (actionString == "watch")
         return WATCH;
