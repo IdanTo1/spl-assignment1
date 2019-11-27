@@ -13,8 +13,8 @@ const std::string Watchable::getTagsString() const
     std::string totalString = "[";
     for(auto tag = tags.begin(); tag!=tags.end(); tag++)
     {
-        if(tag+1 == tags.end())
-            totalString = *tag;
+        if(tag == tags.end()-1)
+            totalString += *tag;
         totalString += (*tag)+", ";
     }
     return totalString+"]";
