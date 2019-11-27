@@ -31,6 +31,7 @@ private:
 class LengthRecommenderUser : public User {
 public:
     LengthRecommenderUser(const std::string& name);
+    ~LengthRecommenderUser();
     virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
     virtual void addToHistory(Watchable&);
@@ -42,6 +43,7 @@ private:
 class RerunRecommenderUser : public User {
 public:
     RerunRecommenderUser(const std::string& name);
+    ~RerunRecommenderUser();
     virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
 private:
@@ -51,6 +53,7 @@ private:
 class GenreRecommenderUser : public User {
 public:
     GenreRecommenderUser(const std::string& name);
+    ~GenreRecommenderUser();
     virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
     virtual void addToHistory(Watchable&);

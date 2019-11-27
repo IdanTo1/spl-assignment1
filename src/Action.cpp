@@ -2,6 +2,8 @@
 
 BaseAction::BaseAction() : errorMsg(""), status(PENDING) {}
 
+BaseAction::~BaseAction() {}
+
 ActionStatus BaseAction::getStatus() const {
     return status;
 }
@@ -36,6 +38,8 @@ CreateUser::CreateUser(const std::string& name, const std::string& recommendatio
                                                                                         _userName(name),
                                                                     _recommendationAlg(recommendationAlg) {}
 
+CreateUser::~CreateUser() {}
+
 void CreateUser::act(Session& sess) {
     if(sess.getUsers().count(_userName)) {
         error(USER_EXISTS_ERR);
@@ -62,6 +66,8 @@ std::string CreateUser::toString() const {
 
 ChangeActiveUser::ChangeActiveUser(const std::string& name): BaseAction(), _newUser(name) {}
 
+ChangeActiveUser::~ChangeActiveUser() {}
+
 void ChangeActiveUser::act(Session &sess) {
     const std::unordered_map<std::string,User*>& usersMap = sess.getUsers();
     if(!usersMap.count(_newUser)) {
@@ -78,6 +84,8 @@ std::string ChangeActiveUser::toString() const {
 }
 
 DeleteUser::DeleteUser(const std::string& name): BaseAction(), _userName(name) {}
+
+DeleteUser::~DeleteUser() {}
 
 void DeleteUser::act(Session &sess) {
     if(!sess.getUsers().count(_userName)) {
@@ -96,6 +104,8 @@ std::string DeleteUser::toString() const {
 DuplicateUser::DuplicateUser(const std::string& newUser, const std::string& oldUser): BaseAction(),
                                                                                       _newUserName(newUser),
                                                                                       _oldUserName(oldUser){}
+
+DuplicateUser::~DuplicateUser() {}
 
 void DuplicateUser::act(Session &sess) {
     const std::unordered_map<std::string,User*>& usersMap = sess.getUsers();
@@ -117,6 +127,8 @@ std::string DuplicateUser::toString() const {
 }
 
 
+PrintContentList::~PrintContentList() {}
+
 void PrintContentList::act(Session& sess) {
     const std::vector<Watchable*>& content = sess.getContent();
     for(auto watchable : content)
@@ -129,6 +141,8 @@ void PrintContentList::act(Session& sess) {
 std::string PrintContentList::toString() const {
     return "PrintContentList " + getStatusString();
 }
+
+PrintWatchHistory::~PrintWatchHistory() {}
 
 void PrintWatchHistory::act(Session& sess) {
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
@@ -147,6 +161,8 @@ std::string PrintWatchHistory::toString() const {
 Watch::Watch(Watchable& toWatch): BaseAction(),
                                  _toWatch(toWatch),
                                   _nextWatchableId(-1) {}
+
+Watch::~Watch() {}
 
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
@@ -182,6 +198,8 @@ std::string Watch::toString() const {
 PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): BaseAction(),
                                                                               _actionsLog(actionsLog) {}
 
+PrintActionsLog::~PrintActionsLog() {}
+
 void PrintActionsLog::act(Session& s) {
     for (auto i = _actionsLog.rbegin(); i != _actionsLog.rend(); ++i ) {
             std::cout << (*i)->toString() << std::endl;
@@ -192,6 +210,8 @@ void PrintActionsLog::act(Session& s) {
 std::string PrintActionsLog::toString() const {
     return "PrintActionsLog "+getStatusString();
 }
+
+Exit::~Exit() {}
 
 void Exit::act(Session& sess) {
     complete();
