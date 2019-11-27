@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <iostream>
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
@@ -14,12 +15,30 @@
 class User;
 class Watchable;
 
+enum ActionStringsEnum{
+    CREATE_USER,
+    CHANGE_USER,
+    DELETE_USER,
+    DUP_USER,
+    LIST_CONTENT,
+    WATCH_LIST,
+    WATCH,
+    LOG_ACTIONS, //because log exists in <vector>.
+    EXIT_LOOP // because exit exists in <unordered_map>.
+};
+
+const std::string ACTION_PARAMS_DELIMITER = " ";
+const std::string CONTINUE = "y";
+const long NOTHING_TO_RECOMMEND = -1;
+
 class Session{
 public:
     Session(const std::string &configFilePath);
     ~Session();
     void start();
 
+    void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
+    ActionStringsEnum strToEnum(const std::string& actionString);
     const std::vector<Watchable*>& getContent() const;
     User& getActiveUser();
     void setActiveUser(User&);
