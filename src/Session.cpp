@@ -65,31 +65,37 @@ void Session::start() {
                 actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case CHANGE_USER: {
                 actionObj = new ChangeActiveUser(actionParams[1]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case DELETE_USER: {
                 actionObj = new DeleteUser(actionParams[1]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case DUP_USER: {
                 actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case LIST_CONTENT: {
                 actionObj = new PrintContentList();
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case WATCH_LIST: {
                 actionObj = new PrintWatchHistory();
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case WATCH: {
                 long nextId = std::stol(actionParams[1]);
@@ -108,16 +114,19 @@ void Session::start() {
                     actionsLog.push_back(watchObj);
                     watchObj->act(*this);
                 }
+                break;
             }
                 case LOG_ACTIONS: {
                     actionObj = new PrintActionsLog(actionsLog);
                     actionObj->act(*this); //act first because log shouldn't be printed to log
                     actionsLog.push_back(actionObj);
+                    break;
                 }
                 case EXIT_LOOP: {
                     actionObj = new PrintActionsLog(actionsLog);
                     actionsLog.push_back(actionObj);
                     actionObj->act(*this);
+                    break;
                 }
             }
         }
