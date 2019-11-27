@@ -17,14 +17,14 @@ Session::~Session()
 {
     this->clean();
 }
-void Session::split(std::string &actionString, std::vector <string> &actionParams, std::string delimiter) {
+void Session::split(std::string &actionString, std::vector <std::string>& actionParams, std::string delimiter) {
     size_t start = 0U;
     size_t end = actionString.find(delimiter);
     while (end != std::string::npos)
     {
-        actionParams.push_back(s.substr(start, end - start));
+        actionParams.push_back(actionString.substr(start, end - start));
         start = end + delimiter.length();
-        end = s.find(delimiter, start);
+        end = actionString.find(delimiter, start);
     }
 
 }
@@ -39,77 +39,88 @@ ActionStringsEnum Session::strToEnum(const std::string &actionString) {
     else if (actionString == "dupuser")
         return dupuser;
     else if (actionString == "content")
-        return content;
+        return listContent;
     else if (actionString == "watchlist")
         return watchlist;
     else if (actionString == "watch")
         return watch;
     else if (actionString == "log")
-        return log;
-    else if (actionString == "exit")
-        return exit;
+        return logActions;
+    else
+        return exitLoop; //if actionString == "exit" or invalid input, program will exit
 }
 
 void Session::start() {
     std::string actionString;
     std::vector<std::string> actionParams;
+    ActionStringsEnum action;
     do {
         std::getline(std::cin, actionString);
         actionParams.clear();
         split(actionString, actionParams, ACTION_PARAMS_DELIMITER);
-        ActionStringsEnum action = strToEnum(actionParams[0]);
+        action = strToEnum(actionParams[0]);
         BaseAction* actionObj;
         switch (action) {
-            case createuser:
+            case createuser: {
                 actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case changeuser:
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case changeuser: {
                 actionObj = new ChangeActiveUser(actionParams[1]);
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case deleteuser:
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case deleteuser: {
                 actionObj = new DeleteUser(actionParams[1]);
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case dupuser:
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case dupuser: {
                 actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case content:
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case listContent: {
                 actionObj = new PrintContentList();
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case watchlist:
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case watchlist: {
                 actionObj = new PrintWatchHistory();
-                actionsLog.push(actionObj);
-                actionObj->act(this);
-            case watch:
-                int nextId = int(actionParams[1]);
-                std::string continueWatch = CONTINUE;
-                do {
-                    Watch watchObj = new Watch(content[nextId]);
-                    actionsLog.push(watchObj);
-                    watchObj->act(this);
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case watch: {
+                long nextId = std::stol(actionParams[1]);
+                std::string continueWatch;
+                Watch *watchObj = new Watch(*(content[nextId]));
+                actionsLog.push_back(watchObj);
+                watchObj->act(*this);
+                while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECCOMAND) {
                     //check for user input, for continue watching.
                     std::getline(std::cin, continueWatch);
                     // check for implicit new watch object (user said yes)
                     if (continueWatch != CONTINUE) {
                         break;
                     }
-                    //make sure there is next watchable
-                    while ((nextId = watchObj.getNextWatchableId()) != NOTHING_TO_RECCOMAND);
-                    case logActions:
-                        actionObj = new PrintActionsLog(actionsLog);
-                    actionObj->act(this); //act first because log shouldn't be printed to log
-                    actionsLog.push(actionObj);
-                    case exitLoop:
-                        actionObj = new PrintActionsLog(actionsLog);
-                    actionsLog.push(actionObj);
-                    actionObj->act(this);
+                    watchObj = new Watch(*(content[nextId]));
+                    actionsLog.push_back(watchObj);
+                    watchObj->act(*this);
                 }
+            }
+                case logActions: {
+                    actionObj = new PrintActionsLog(actionsLog);
+                    actionObj->act(*this); //act first because log shouldn't be printed to log
+                    actionsLog.push_back(actionObj);
+                }
+                case exitLoop: {
+                    actionObj = new PrintActionsLog(actionsLog);
+                    actionsLog.push_back(actionObj);
+                    actionObj->act(*this);
+                }
+            }
         }
-    }
     while (action != exitLoop);
 }
 

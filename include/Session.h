@@ -21,7 +21,7 @@ enum ActionStringsEnum{
     changeuser,
     deleteuser,
     dupuser,
-    content,
+    listContent,
     watchlist,
     watch,
     logActions, //because log exists in <vector>.
@@ -30,7 +30,7 @@ enum ActionStringsEnum{
 
 const std::string ACTION_PARAMS_DELIMITER = " ";
 const std::string CONTINUE = "y";
-const int NOTHING_TO_RECCOMAND = -1;
+const long NOTHING_TO_RECCOMAND = -1;
 
 class Session{
 public:
