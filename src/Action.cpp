@@ -183,8 +183,8 @@ PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): Ba
                                                                               _actionsLog(actionsLog) {}
 
 void PrintActionsLog::act(Session& s) {
-    for (auto action: _actionsLog) {
-            std::cout << action->toString() << std::endl;
+    for (auto i = _actionsLog.rbegin(); i != _actionsLog.rend(); ++i ) {
+            std::cout << (*i)->toString() << std::endl;
     }
     complete();
 }
