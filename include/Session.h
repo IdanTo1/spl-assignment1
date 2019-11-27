@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
-//#include <boost/algorithm/string.hpp> // TODO
 #include "Action.h"
 #include "User.h"
 #include "Watchable.h"
@@ -17,20 +16,20 @@ class User;
 class Watchable;
 
 enum ActionStringsEnum{
-    createuser,
-    changeuser,
-    deleteuser,
-    dupuser,
-    listContent,
-    watchlist,
-    watch,
-    logActions, //because log exists in <vector>.
-    exitLoop // because exit exists in <unordered_map>.
+    CREATE_USER,
+    CHANGE_USER,
+    DELETE_USER,
+    DUP_USER,
+    LIST_CONTENT,
+    WATCH_LIST,
+    WATCH,
+    LOG_ACTIONS, //because log exists in <vector>.
+    EXIT_LOOP // because exit exists in <unordered_map>.
 };
 
 const std::string ACTION_PARAMS_DELIMITER = " ";
 const std::string CONTINUE = "y";
-const long NOTHING_TO_RECCOMAND = -1;
+const long NOTHING_TO_RECOMMEND = -1;
 
 class Session{
 public:
