@@ -26,6 +26,7 @@ void Session::split(std::string &actionString, std::vector <std::string>& action
         start = end + delimiter.length();
         end = actionString.find(delimiter, start);
     }
+    actionParams.push_back(actionString.substr(start, std::min(end, actionString.size()) - start + 1));
 
 }
 
