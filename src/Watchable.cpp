@@ -15,7 +15,7 @@ const std::string Watchable::getTagsString() const
     {
         if(tag == tags.end()-1)
             totalString += *tag;
-        totalString += (*tag)+", ";
+        else totalString += (*tag)+", ";
     }
     return totalString+"]";
 }
