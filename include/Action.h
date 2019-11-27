@@ -36,6 +36,7 @@ private:
 class CreateUser  : public BaseAction {
 public:
     CreateUser(const std::string& name, const std::string& recommendationAlg);
+    ~CreateUser();
     virtual void act(Session& sess);
     virtual std::string toString() const;
     virtual BaseAction* clone() const;
@@ -47,6 +48,7 @@ private:
 class ChangeActiveUser : public BaseAction {
 public:
     ChangeActiveUser(const std::string& name);
+    ~ChangeActiveUser();
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -57,6 +59,7 @@ private:
 class DeleteUser : public BaseAction {
 public:
     DeleteUser(const std::string& name);
+    ~DeleteUser();
 	virtual void act(Session & sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -68,6 +71,7 @@ private:
 class DuplicateUser : public BaseAction {
 public:
     DuplicateUser(const std::string&, const std::string&);
+    ~DuplicateUser();
 	virtual void act(Session & sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -78,6 +82,7 @@ private:
 
 class PrintContentList : public BaseAction {
 public:
+    ~PrintContentList();
 	virtual void act (Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -85,6 +90,7 @@ public:
 
 class PrintWatchHistory : public BaseAction {
 public:
+    ~PrintWatchHistory();
 	virtual void act (Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -94,6 +100,7 @@ public:
 class Watch : public BaseAction {
 public:
 	Watch(Watchable& toWatch);
+	~Watch();
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -106,6 +113,7 @@ private:
 
 class PrintActionsLog : public BaseAction {
 public:
+    ~PrintActionsLog();
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
@@ -116,6 +124,7 @@ private:
 
 class Exit : public BaseAction {
 public:
+    ~Exit();
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;

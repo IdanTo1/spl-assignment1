@@ -9,7 +9,8 @@ all: splflix
 
 # linker
 splflix: bin/Main.o
-	$(CC) -o bin/splflix bin/Session.o bin/Watchable.o bin/User.o bin/Action.o bin/Main.o $(LFLAGS)
+	$(CC) -o bin/splflix bin/Session.o bin/Watchable.o bin/User.o bin/PopularTag.o bin/Action.o bin/Main.o \
+		$(LFLAGS)
 
 # source files
 bin/Main.o: src/Main.cpp bin/Session.o
@@ -36,4 +37,3 @@ bin/PopularTag.o: include/PopularTag.h src/PopularTag.cpp
 .PHONY: all clean
 clean:
 	rm -f bin/*
-	

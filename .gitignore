@@ -36,3 +36,5 @@
 
 #all output files
 bin/*
+#project files
+*.json

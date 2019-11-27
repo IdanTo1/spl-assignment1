@@ -3,8 +3,13 @@
 //
 
 #include "../include/PopularTag.h"
+PopularTag::PopularTag(): _name(""), _count(0) {}
 
 PopularTag::PopularTag(std::string name): _name(name), _count(1) {}
+
+PopularTag::PopularTag(const PopularTag &other): _name(other._name), _count(other._count) {}
+
+PopularTag::~PopularTag() {}
 
 const std::string& PopularTag::getName() const {
     return _name;
