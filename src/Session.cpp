@@ -8,6 +8,120 @@ Session::Session(const std::string &configFilePath):
     activeUser(nullptr)
 {
     this->fillContentFromJson(configFilePath);
+    User* defaultUser = new LengthRecommenderUser("default");
+    userMap["default"] = defaultUser;
+    activeUser = defaultUser;
+}
+
+Session::~Session()
+{
+    this->clean();
+}
+void Session::split(std::string &actionString, std::vector <std::string>& actionParams, std::string delimiter) {
+    size_t start = 0U;
+    size_t end = actionString.find(delimiter);
+    while (end != std::string::npos)
+    {
+        actionParams.push_back(actionString.substr(start, end - start));
+        start = end + delimiter.length();
+        end = actionString.find(delimiter, start);
+    }
+
+}
+
+ActionStringsEnum Session::strToEnum(const std::string &actionString) {
+    if (actionString == "createuser")
+        return CREATE_USER;
+    else if (actionString == "changeuser")
+        return CHANGE_USER;
+    else if (actionString == "deleteuser")
+        return DELETE_USER;
+    else if (actionString == "dupuser")
+        return DUP_USER;
+    else if (actionString == "content")
+        return LIST_CONTENT;
+    else if (actionString == "watchlist")
+        return WATCH_LIST;
+    else if (actionString == "watch")
+        return WATCH;
+    else if (actionString == "log")
+        return LOG_ACTIONS;
+    else
+        return EXIT_LOOP; //if actionString == "exit" or invalid input, program will exit
+}
+
+void Session::start() {
+    std::string actionString;
+    std::vector<std::string> actionParams;
+    ActionStringsEnum action;
+    do {
+        std::getline(std::cin, actionString);
+        actionParams.clear();
+        split(actionString, actionParams, ACTION_PARAMS_DELIMITER);
+        action = strToEnum(actionParams[0]);
+        BaseAction* actionObj;
+        switch (action) {
+            case CREATE_USER: {
+                actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case CHANGE_USER: {
+                actionObj = new ChangeActiveUser(actionParams[1]);
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case DELETE_USER: {
+                actionObj = new DeleteUser(actionParams[1]);
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case DUP_USER: {
+                actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case LIST_CONTENT: {
+                actionObj = new PrintContentList();
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case WATCH_LIST: {
+                actionObj = new PrintWatchHistory();
+                actionsLog.push_back(actionObj);
+                actionObj->act(*this);
+            }
+            case WATCH: {
+                long nextId = std::stol(actionParams[1]);
+                std::string continueWatch;
+                Watch *watchObj = new Watch(*(content[nextId]));
+                actionsLog.push_back(watchObj);
+                watchObj->act(*this);
+                while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
+                    //check for user input, for continue watching.
+                    std::getline(std::cin, continueWatch);
+                    // check for implicit new watch object (user said yes)
+                    if (continueWatch != CONTINUE) {
+                        break;
+                    }
+                    watchObj = new Watch(*(content[nextId]));
+                    actionsLog.push_back(watchObj);
+                    watchObj->act(*this);
+                }
+            }
+                case LOG_ACTIONS: {
+                    actionObj = new PrintActionsLog(actionsLog);
+                    actionObj->act(*this); //act first because log shouldn't be printed to log
+                    actionsLog.push_back(actionObj);
+                }
+                case EXIT_LOOP: {
+                    actionObj = new PrintActionsLog(actionsLog);
+                    actionsLog.push_back(actionObj);
+                    actionObj->act(*this);
+                }
+            }
+        }
+    while (action != EXIT_LOOP);
 }
 
 std::vector<std::string> Session::extractTags(nlohmann::json& tagList)
@@ -109,8 +223,7 @@ void Session::cleanUserMap()
     }
 }
 
-void Session::clean()
-{
+void Session::clean() {
     activeUser = nullptr;
     cleanIterable(&content);
     cleanIterable(&actionsLog);
@@ -121,11 +234,6 @@ Session::Session(const Session &rhs)
 : content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
  activeUser(userMap[rhs.activeUser->getName()])
 {}
-
-Session::~Session()
-{
-    this->clean();
-}
 
 void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
 {
