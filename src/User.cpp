@@ -25,6 +25,15 @@ void User::setName(const std::string& newName) {
     name = newName;
 }
 
+void User::fixHistory(std::vector<Watchable*>& content)
+{
+    int index = 0;
+    for(auto w : history)
+    {
+        history[index++] = content[w->getId()];
+    }
+}
+
 // Length Recommender User's methods implementation.
 LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name), _avgWatchableLen(0.0f) {}
 

@@ -223,6 +223,7 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     {
         delete w;
     }
+    toDelete->clear();
 }
 
 void Session::cleanUserMap()
@@ -230,7 +231,9 @@ void Session::cleanUserMap()
     for(auto w: userMap)
     {
         delete w.second;
+        w.second = nullptr;
     }
+    userMap.clear();
 }
 
 void Session::clean() {
@@ -241,15 +244,22 @@ void Session::clean() {
 }
 
 Session::Session(const Session &rhs)
-: content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
- activeUser(userMap[rhs.activeUser->getName()])
-{}
+: content(), actionsLog(), userMap(),
+ activeUser()
+{
+    this->deepCopyPointerVector(rhs.content, this->content);
+    this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
+    this->deepCopyUsers(rhs.userMap);
+    this->activeUser = userMap[rhs.activeUser->getName()];
+}
 
 void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
 {
     for(auto u: other)
     {
-        *(this->userMap[u.first]) = *(u.second);
+        User* newUser = u.second->clone();
+        this->userMap[u.first] = newUser;
+        newUser->fixHistory(content);
     }
 }
 

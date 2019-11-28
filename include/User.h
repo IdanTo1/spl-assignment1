@@ -22,6 +22,7 @@ public:
     virtual void addToHistory(Watchable&);
     bool isInHistory(const Watchable&);
     void setName(const std::string&);
+    void fixHistory(std::vector<Watchable*>& content);
 protected:
     std::vector<Watchable*> history;
 private:
