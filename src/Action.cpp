@@ -61,7 +61,7 @@ void CreateUser::act(Session& sess) {
     complete();
 }
 std::string CreateUser::toString() const {
-    return ("CreateUser" + getStatusString());
+    return ("CreateUser " + getStatusString());
 }
 
 ChangeActiveUser::ChangeActiveUser(const std::string& name): BaseAction(), _newUser(name) {}
@@ -80,7 +80,7 @@ void ChangeActiveUser::act(Session &sess) {
 }
 
 std::string ChangeActiveUser::toString() const {
-    return ("ChangeUser" + getStatusString());
+    return ("ChangeUser " + getStatusString());
 }
 
 DeleteUser::DeleteUser(const std::string& name): BaseAction(), _userName(name) {}
@@ -98,7 +98,7 @@ void DeleteUser::act(Session &sess) {
 }
 
 std::string DeleteUser::toString() const {
-    return ("DeleteUser" + getStatusString());
+    return ("DeleteUser " + getStatusString());
 }
 
 DuplicateUser::DuplicateUser(const std::string& newUser, const std::string& oldUser): BaseAction(),
@@ -123,7 +123,7 @@ void DuplicateUser::act(Session &sess) {
 }
 
 std::string DuplicateUser::toString() const {
-    return ("DuplicateUser" + getStatusString());
+    return ("DuplicateUser " + getStatusString());
 }
 
 
@@ -136,6 +136,7 @@ void PrintContentList::act(Session& sess) {
         // +1 for easier readabillity, where lists start at 1
         std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toString() << std::endl;
     }
+    complete();
 }
 
 std::string PrintContentList::toString() const {
@@ -146,10 +147,11 @@ PrintWatchHistory::~PrintWatchHistory() {}
 
 void PrintWatchHistory::act(Session& sess) {
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
+    int i = 1; // 1 for easier readabillity, where lists start at 1
     for(auto watchable: history)
     {
-        // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toStringName() << std::endl;
+        std::cout << std::to_string(i) << ". " << watchable->toStringName() << std::endl;
+        i++;
     }
     complete();
 }
@@ -166,7 +168,7 @@ Watch::~Watch() {}
 
 void Watch::act(Session& sess) {
     User& activeUser = sess.getActiveUser();
-    std::cout << "Watching " << _toWatch.toString() << std::endl;
+    std::cout << "Watching " << _toWatch.toStringName() << std::endl;
     activeUser.addToHistory(_toWatch);
     complete(); //Because this is the end of watching the content
     Watchable* nextWatchable = _toWatch.getNextWatchable(sess);
@@ -180,7 +182,7 @@ void Watch::act(Session& sess) {
         return;
     }
     else{
-        std::cout << "We recommend watching " << nextWatchable->toString() <<
+        std::cout << "We recommend watching " << nextWatchable->toStringName() <<
                                                  ", continue watching? [y/n]" << std::endl;
         _nextWatchableId = nextWatchable->getId();
     }
