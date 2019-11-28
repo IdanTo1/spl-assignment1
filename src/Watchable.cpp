@@ -50,11 +50,11 @@ Watchable* Movie::getNextWatchable(Session& s) const
 std::string Movie::toStringName() const
 {
     // According to the "Inglorious Basterds 153 minutes" format
-    return name+" ";
+    return name;
 }
 
 std::string Movie::toString() const {
-    return toStringName() + std::to_string(getLength())+" minutes " + getTagsString();
+    return toStringName() + " " + std::to_string(getLength())+" minutes " + getTagsString();
 }
 
 /* A second constructor for Episode is implemented with an extra paramter.
