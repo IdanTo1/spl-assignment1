@@ -1,0 +1,19 @@
+content
+createuser idan len
+watch 1
+n
+watch 2
+n
+watchhist
+changeuser idan
+watchhist
+watch 3
+n
+log
+dupuser idan roy
+changeuser roy
+deleteuser idan
+watchhist
+log
+content
+exit

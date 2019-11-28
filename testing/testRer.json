@@ -1,7 +1,7 @@
 {
     "movies": [
       {
-        "name" : "1",
+        "name" : "movie",
         "length": 1,
         "tags": ["Drama"
         ]

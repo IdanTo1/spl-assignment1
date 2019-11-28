@@ -1,0 +1,12 @@
+createuser idan gen
+changeuser idan
+watch 1
+n
+watch 2
+y
+y
+watch 5
+y
+y
+n
+exit

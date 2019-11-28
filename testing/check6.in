@@ -1,0 +1,9 @@
+createuser idan rer
+changeuser idan
+watch 2
+n
+watch 1
+y
+y
+n
+exit
