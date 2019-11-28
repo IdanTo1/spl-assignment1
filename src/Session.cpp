@@ -229,7 +229,7 @@ void Session::cleanUserMap()
     for(auto w: userMap)
     {
         delete w.second;
-        w = nullptr;
+        w.second = nullptr;
     }
 }
 
