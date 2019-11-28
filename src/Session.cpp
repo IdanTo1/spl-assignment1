@@ -26,6 +26,7 @@ void Session::split(std::string &actionString, std::vector <std::string>& action
         start = end + delimiter.length();
         end = actionString.find(delimiter, start);
     }
+    actionParams.push_back(actionString.substr(start, actionString.size() - start + 1));
 
 }
 
@@ -40,7 +41,7 @@ ActionStringsEnum Session::strToEnum(const std::string &actionString) {
         return DUP_USER;
     else if (actionString == "content")
         return LIST_CONTENT;
-    else if (actionString == "watchlist")
+    else if (actionString == "watchhist")
         return WATCH_LIST;
     else if (actionString == "watch")
         return WATCH;
@@ -65,36 +66,42 @@ void Session::start() {
                 actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case CHANGE_USER: {
                 actionObj = new ChangeActiveUser(actionParams[1]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case DELETE_USER: {
                 actionObj = new DeleteUser(actionParams[1]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case DUP_USER: {
                 actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case LIST_CONTENT: {
                 actionObj = new PrintContentList();
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case WATCH_LIST: {
                 actionObj = new PrintWatchHistory();
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
+                break;
             }
             case WATCH: {
                 long nextId = std::stol(actionParams[1]);
                 std::string continueWatch;
-                Watch *watchObj = new Watch(*(content[nextId]));
+                Watch *watchObj = new Watch(*(content[nextId-1]));
                 actionsLog.push_back(watchObj);
                 watchObj->act(*this);
                 while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
@@ -104,20 +111,23 @@ void Session::start() {
                     if (continueWatch != CONTINUE) {
                         break;
                     }
-                    watchObj = new Watch(*(content[nextId]));
+                    watchObj = new Watch(*(content[nextId-1]));
                     actionsLog.push_back(watchObj);
                     watchObj->act(*this);
                 }
+                break;
             }
                 case LOG_ACTIONS: {
                     actionObj = new PrintActionsLog(actionsLog);
                     actionObj->act(*this); //act first because log shouldn't be printed to log
                     actionsLog.push_back(actionObj);
+                    break;
                 }
                 case EXIT_LOOP: {
-                    actionObj = new PrintActionsLog(actionsLog);
+                    actionObj = new Exit();
                     actionsLog.push_back(actionObj);
                     actionObj->act(*this);
+                    break;
                 }
             }
         }
@@ -153,13 +163,10 @@ void Session::fillContentFromJson(const std::string &configFilePath) {
     {
         for(uint i = 0; i < seriesDesc["seasons"].size(); i++)
         {
-            for(uint j = 0; j < seriesDesc["seasons"][i].size(); j++)
+            uint episodesNum = seriesDesc["seasons"][i];
+            for(uint j = 0; j < episodesNum; j++)
             {
                 int nextEpisodeId = currentId+1;
-                /* json operator[] returns a json object, which in this case represents a number
-                    The .size() function isi therefore implemented in a way that returns
-                    the number represented by the json object
-                */
                 if(j == seriesDesc["seasons"][i].size()-1 && i==seriesDesc["seasons"].size()-1)
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
@@ -212,7 +219,6 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     {
         delete w;
     }
-    delete toDelete;
 }
 
 void Session::cleanUserMap()
