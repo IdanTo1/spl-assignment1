@@ -111,7 +111,7 @@ void Session::start() {
                     if (continueWatch != CONTINUE) {
                         break;
                     }
-                    watchObj = new Watch(*(content[nextId-1]));
+                    watchObj = new Watch(*(content[nextId]));
                     actionsLog.push_back(watchObj);
                     watchObj->act(*this);
                 }
