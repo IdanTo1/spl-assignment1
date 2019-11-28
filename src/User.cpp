@@ -90,12 +90,7 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
         _lastRecIdx ++;
         return *(history.begin());
     }
-    /*
-        mod (size - 1) because we want to estimate the next index "before this content was watched"
-        so that for example if we last recommended 0 because the history was otherwise empty now we will
-        recommend 0 again, because the +1 should have happened before the history was lengthened
-    */
-    _lastRecIdx = (_lastRecIdx+1) % (history.size()-1);
+    _lastRecIdx = (_lastRecIdx+1) % history.size();
     return history[_lastRecIdx];
 }
 
