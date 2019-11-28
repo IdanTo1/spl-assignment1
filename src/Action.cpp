@@ -146,6 +146,7 @@ std::string PrintContentList::toString() const {
 PrintWatchHistory::~PrintWatchHistory() {}
 
 void PrintWatchHistory::act(Session& sess) {
+    std::cout << "Watch history for " << sess.getActiveUser().getName() std::endl;
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
     int i = 1; // 1 for easier readabillity, where lists start at 1
     for(auto watchable: history)
