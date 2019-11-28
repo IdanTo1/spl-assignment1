@@ -161,8 +161,10 @@ void Session::fillContentFromJson(const std::string &configFilePath) {
     //iterate over tv series'. for each series and season add the corresponding episode
     for(auto seriesDesc: contentJson["tv_series"])
     {
+        // size() returns the size of the array, which in this case is the number of seasons
         for(uint i = 0; i < seriesDesc["seasons"].size(); i++)
         {
+            // Convert the content of the array into ints to use in the for loop
             uint episodesNum = seriesDesc["seasons"][i];
             for(uint j = 0; j < episodesNum; j++)
             {
