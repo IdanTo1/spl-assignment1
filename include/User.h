@@ -21,6 +21,7 @@ public:
     std::vector<Watchable*> get_history() const;
     virtual void addToHistory(Watchable&);
     bool isInHistory(const Watchable&);
+    void setName(const std::string&);
 protected:
     std::vector<Watchable*> history;
 private:

@@ -21,6 +21,9 @@ bool User::isInHistory(const Watchable& watchable) {
     return std::find(history.begin(), history.end(), &watchable) != history.end();
 }
 
+void User::setName(const std::string& newName) {
+    name = newName;
+}
 
 // Length Recommender User's methods implementation.
 LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name), _avgWatchableLen(0.0f) {}

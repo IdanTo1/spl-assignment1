@@ -81,7 +81,11 @@ void Session::start() {
                 break;
             }
             case DUP_USER: {
-                actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
+                /*
+                    dupuser <original_username> <new_username> as opposed to
+                    the constructor with the reverse order
+                */
+                actionObj = new DuplicateUser(actionParams[2], actionParams[1]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
                 break;
