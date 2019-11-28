@@ -21,6 +21,19 @@ bool User::isInHistory(const Watchable& watchable) {
     return std::find(history.begin(), history.end(), &watchable) != history.end();
 }
 
+void User::setName(const std::string& newName) {
+    name = newName;
+}
+
+void User::fixHistory(std::vector<Watchable*>& content)
+{
+    int index = 0;
+    for(auto w : history)
+    {
+        history[index] = content[w->getId()];
+        index++;
+    }
+}
 
 // Length Recommender User's methods implementation.
 LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name), _avgWatchableLen(0.0f) {}
@@ -75,6 +88,7 @@ User* RerunRecommenderUser::clone() const{
 
 Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
     if (_lastRecIdx == -1) {
+        _lastRecIdx ++;
         return *(history.begin());
     }
     _lastRecIdx = (_lastRecIdx+1) % history.size();

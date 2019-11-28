@@ -99,9 +99,9 @@ void Session::start() {
                 break;
             }
             case WATCH: {
-                long nextId = std::stol(actionParams[1]);
+                long nextId = std::stol(actionParams[1])-1;
                 std::string continueWatch;
-                Watch *watchObj = new Watch(*(content[nextId-1]));
+                Watch *watchObj = new Watch(*(content[nextId]));
                 actionsLog.push_back(watchObj);
                 watchObj->act(*this);
                 while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
@@ -111,7 +111,7 @@ void Session::start() {
                     if (continueWatch != CONTINUE) {
                         break;
                     }
-                    watchObj = new Watch(*(content[nextId-1]));
+                    watchObj = new Watch(*(content[nextId]));
                     actionsLog.push_back(watchObj);
                     watchObj->act(*this);
                 }
@@ -161,13 +161,15 @@ void Session::fillContentFromJson(const std::string &configFilePath) {
     //iterate over tv series'. for each series and season add the corresponding episode
     for(auto seriesDesc: contentJson["tv_series"])
     {
+        // size() returns the size of the array, which in this case is the number of seasons
         for(uint i = 0; i < seriesDesc["seasons"].size(); i++)
         {
+            // Convert the content of the array into ints to use in the for loop
             uint episodesNum = seriesDesc["seasons"][i];
             for(uint j = 0; j < episodesNum; j++)
             {
                 int nextEpisodeId = currentId+1;
-                if(j == seriesDesc["seasons"][i].size()-1 && i==seriesDesc["seasons"].size()-1)
+                if(j == episodesNum-1 && i==seriesDesc["seasons"].size()-1)
                     nextEpisodeId = 0;
                 //i+1 and j+1 because seasons and episodes start from 1
                 Episode* episodeObj = new Episode(currentId, seriesDesc["name"],
@@ -218,6 +220,7 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     for(auto w: *toDelete)
     {
         delete w;
+        w = nullptr;
     }
 }
 
@@ -226,6 +229,7 @@ void Session::cleanUserMap()
     for(auto w: userMap)
     {
         delete w.second;
+        w = nullptr;
     }
 }
 
@@ -237,15 +241,22 @@ void Session::clean() {
 }
 
 Session::Session(const Session &rhs)
-: content(rhs.content), actionsLog(rhs.actionsLog), userMap(rhs.userMap),
- activeUser(userMap[rhs.activeUser->getName()])
-{}
+: content(), actionsLog(), userMap(),
+ activeUser()
+{
+    this->deepCopyPointerVector(rhs.content, this->content);
+    this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
+    this->deepCopyUsers(rhs.userMap);
+    this->activeUser = this->userMap[rhs.activeUser->getName()];
+}
 
 void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)
 {
     for(auto u: other)
     {
-        *(this->userMap[u.first]) = *(u.second);
+        User* newUser = u.second->clone();
+        this->userMap[u.first] = newUser;
+        newUser->fixHistory(content);
     }
 }
 

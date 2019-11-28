@@ -28,6 +28,7 @@ void BaseAction::complete() {
 void BaseAction::error(const std::string& errorMsg) {
     this->errorMsg = errorMsg;
     status = ERROR;
+    std::cout << "ERROR - " << errorMsg << std::endl;
 }
 
 std::string BaseAction::getErrorMsg() const {
@@ -101,9 +102,9 @@ std::string DeleteUser::toString() const {
     return ("DeleteUser " + getStatusString());
 }
 
-DuplicateUser::DuplicateUser(const std::string& newUser, const std::string& oldUser): BaseAction(),
-                                                                                      _newUserName(newUser),
-                                                                                      _oldUserName(oldUser){}
+DuplicateUser::DuplicateUser(const std::string& oldUser, const std::string& newUser): BaseAction(),
+                                                                                      _oldUserName(oldUser),
+                                                                                      _newUserName(newUser){}
 
 DuplicateUser::~DuplicateUser() {}
 
@@ -118,6 +119,7 @@ void DuplicateUser::act(Session &sess) {
     else {
         User& oldUser = *(usersMap.at(_oldUserName));
         User* newUser = oldUser.clone();
+        newUser->setName(_newUserName);
         sess.addToUserMap(newUser);
     }
 }
@@ -146,6 +148,7 @@ std::string PrintContentList::toString() const {
 PrintWatchHistory::~PrintWatchHistory() {}
 
 void PrintWatchHistory::act(Session& sess) {
+    std::cout << "Watch history for " << sess.getActiveUser().getName() << std::endl;
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
     int i = 1; // 1 for easier readabillity, where lists start at 1
     for(auto watchable: history)
