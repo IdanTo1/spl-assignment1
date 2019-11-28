@@ -30,7 +30,8 @@ void User::fixHistory(std::vector<Watchable*>& content)
     int index = 0;
     for(auto w : history)
     {
-        history[index++] = content[w->getId()];
+        history[index] = content[w->getId()];
+        index++;
     }
 }
 

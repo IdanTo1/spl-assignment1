@@ -76,8 +76,8 @@ public:
 	virtual std::string toString() const;
 	virtual BaseAction* clone() const;
 private:
-    const std::string _newUserName;
     const std::string _oldUserName;
+    const std::string _newUserName;
 };
 
 class PrintContentList : public BaseAction {

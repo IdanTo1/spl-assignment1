@@ -81,11 +81,7 @@ void Session::start() {
                 break;
             }
             case DUP_USER: {
-                /*
-                    dupuser <original_username> <new_username> as opposed to
-                    the constructor with the reverse order
-                */
-                actionObj = new DuplicateUser(actionParams[2], actionParams[1]);
+                actionObj = new DuplicateUser(actionParams[1], actionParams[2]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
                 break;
@@ -103,9 +99,9 @@ void Session::start() {
                 break;
             }
             case WATCH: {
-                long nextId = std::stol(actionParams[1]);
+                long nextId = std::stol(actionParams[1])-1;
                 std::string continueWatch;
-                Watch *watchObj = new Watch(*(content[nextId-1]));
+                Watch *watchObj = new Watch(*(content[nextId]));
                 actionsLog.push_back(watchObj);
                 watchObj->act(*this);
                 while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
@@ -222,8 +218,8 @@ void Session::cleanIterable(T* toDelete) //T should be iterable
     for(auto w: *toDelete)
     {
         delete w;
+        w = nullptr;
     }
-    toDelete->clear();
 }
 
 void Session::cleanUserMap()
@@ -231,9 +227,8 @@ void Session::cleanUserMap()
     for(auto w: userMap)
     {
         delete w.second;
-        w.second = nullptr;
+        w = nullptr;
     }
-    userMap.clear();
 }
 
 void Session::clean() {
@@ -250,7 +245,7 @@ Session::Session(const Session &rhs)
     this->deepCopyPointerVector(rhs.content, this->content);
     this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
     this->deepCopyUsers(rhs.userMap);
-    this->activeUser = userMap[rhs.activeUser->getName()];
+    this->activeUser = this->userMap[rhs.activeUser->getName()];
 }
 
 void Session::deepCopyUsers(const std::unordered_map<std::string, User*>& other)

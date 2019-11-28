@@ -102,9 +102,9 @@ std::string DeleteUser::toString() const {
     return ("DeleteUser " + getStatusString());
 }
 
-DuplicateUser::DuplicateUser(const std::string& newUser, const std::string& oldUser): BaseAction(),
-                                                                                      _newUserName(newUser),
-                                                                                      _oldUserName(oldUser){}
+DuplicateUser::DuplicateUser(const std::string& oldUser, const std::string& newUser): BaseAction(),
+                                                                                      _oldUserName(oldUser),
+                                                                                      _newUserName(newUser){}
 
 DuplicateUser::~DuplicateUser() {}
 
