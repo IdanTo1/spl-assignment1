@@ -138,9 +138,7 @@ GenreRecommenderUser& GenreRecommenderUser::operator=(const GenreRecommenderUser
 
 GenreRecommenderUser::GenreRecommenderUser(GenreRecommenderUser&& rhs) : User(rhs),
                                                                 _popularTagsMap(rhs._popularTagsMap),
-                                                                _popularTagsVector(rhs._popularTagsVector) {
-    rhs.cleanPopularTags(false);
-}
+                                                                _popularTagsVector(rhs._popularTagsVector) {}
 
 GenreRecommenderUser& GenreRecommenderUser::operator=(GenreRecommenderUser&& rhs) {
     if(this != &rhs) {
@@ -169,7 +167,8 @@ void GenreRecommenderUser::updatePopularTags() {
             _popularTagsMap[*iter]->increaseCount();
         }
         // sorts by PopularTag's operator<()
-        std::sort(_popularTagsVector.begin(), _popularTagsVector.end(), [](PopularTag* a, PopularTag* b) { return *a < *b; });
+        std::sort(_popularTagsVector.begin(), _popularTagsVector.end(),
+                  [](PopularTag* a, PopularTag* b) { return *a < *b; });
     }
 }
 
