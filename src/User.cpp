@@ -182,7 +182,7 @@ void GenreRecommenderUser::addToHistory(Watchable& watchable) {
 Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
     std::vector<Watchable*> content = s.getContent();
     std::vector<Watchable*>::iterator contentIter;
-    std::vector<PopularTag*>::iterator popularTagsIter;
+    std::vector<PopularTag*>::reverse_iterator popularTagsIter;
     /* iterate over all user's popular tags, from most to least popular. The iterator goes from end
        to start because common sorting is small to large while the needed here is large to small
     */
