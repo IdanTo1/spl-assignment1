@@ -2,7 +2,7 @@
 // Created by idanto on 20/11/2019.
 //
 
-#include "../include/PopularTag.h"
+#include "../include/Session.h"
 PopularTag::PopularTag(): _name(""), _count(0) {}
 
 PopularTag::PopularTag(std::string name): _name(name), _count(1) {}
@@ -31,7 +31,7 @@ bool PopularTag::operator <(const PopularTag& pt) {
         return true;
     }
     else if (this->_count > pt._count) {
-        return  false;
+        return false;
     }
     //if both tags have same popularity, compare by the classic string opertor<
     else {

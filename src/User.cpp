@@ -183,8 +183,10 @@ Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
     std::vector<Watchable*> content = s.getContent();
     std::vector<Watchable*>::iterator contentIter;
     std::vector<PopularTag*>::iterator popularTagsIter;
-    // iterate over all user's popular tags, from most to least popular.
-    for (popularTagsIter = _popularTagsVector.begin(); popularTagsIter != _popularTagsVector.end();
+    /* iterate over all user's popular tags, from most to least popular. The iterator goes from end
+       to start because common sorting is small to large while the needed here is large to small
+    */
+    for (popularTagsIter = _popularTagsVector.rbegin(); popularTagsIter != _popularTagsVector.rend();
          popularTagsIter++) {
         // iterate over the content, to check whether there is a Watchable containing this tag.
         for (contentIter = content.begin(); contentIter != content.end(); contentIter++) {
