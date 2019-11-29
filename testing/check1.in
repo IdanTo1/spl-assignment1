@@ -1,0 +1,28 @@
+content
+createuser roy len
+changeuser roy
+watch 4
+n
+changeuser default
+log
+exit
+content
+log
+changeuser roy
+watchhist
+exit
+content
+log
+changeuser roy
+exit
+log
+content
+watchhist
+createuser roy len
+changeuser roy
+watchhist
+exit
+log
+content
+watchhist
+exit
