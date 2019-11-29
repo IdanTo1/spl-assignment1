@@ -56,6 +56,10 @@ class GenreRecommenderUser : public User {
 public:
     GenreRecommenderUser(const std::string& name);
     ~GenreRecommenderUser();
+    GenreRecommenderUser(const GenreRecommenderUser& rhs);
+    GenreRecommenderUser& operator=(const GenreRecommenderUser& rhs);
+    GenreRecommenderUser(GenreRecommenderUser&& rhs);
+    GenreRecommenderUser& operator=(GenreRecommenderUser&& rhs);
     virtual User* clone() const;
     virtual Watchable* getRecommendation(Session& s);
     virtual void addToHistory(Watchable&);
@@ -64,8 +68,10 @@ private:
     // It was created like this so that we can update count in O(logn) and sorts the tags in O(nlogn)
     // (but usually better because we change finite number of tags).
     std::map<std::string, PopularTag*> _popularTagsMap;
-    std::vector<PopularTag> _popularTagsVector;
+    std::vector<PopularTag*> _popularTagsVector;
     void updatePopularTags();
+    void cleanPopularTags(bool isDeepClean);
+    void deepCopyPopularTags(const std::vector<PopularTag*>& tags);
 };
 
 #endif
