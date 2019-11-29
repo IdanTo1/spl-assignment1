@@ -121,6 +121,7 @@ void DuplicateUser::act(Session &sess) {
         User* newUser = oldUser.clone();
         newUser->setName(_newUserName);
         sess.addToUserMap(newUser);
+        complete();
     }
 }
 

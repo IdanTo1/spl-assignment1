@@ -100,7 +100,55 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 GenreRecommenderUser::GenreRecommenderUser(const std::string& name): User(name), _popularTagsMap(),
                                                                      _popularTagsVector() {}
 
-GenreRecommenderUser::~GenreRecommenderUser() {}
+GenreRecommenderUser::~GenreRecommenderUser() {
+    this->cleanPopularTags(true);
+}
+
+void GenreRecommenderUser::cleanPopularTags(bool isDeepClean) {
+    for(uint i = 0; i < _popularTagsVector.size(); i++) {
+        PopularTag* tag = _popularTagsVector[i];
+        _popularTagsMap[tag->getName()] = nullptr;
+        _popularTagsVector[i] = nullptr;
+        if(isDeepClean)
+            delete tag;
+    }
+}
+
+void GenreRecommenderUser::deepCopyPopularTags(const std::vector<PopularTag*>& tags) {
+    for(auto tag : tags) {
+        PopularTag* newTag = new PopularTag(*tag);
+        _popularTagsVector.push_back(newTag);
+        _popularTagsMap[newTag->getName()] = newTag;
+    }
+}
+
+GenreRecommenderUser::GenreRecommenderUser(const GenreRecommenderUser& rhs) : User(rhs),
+                                                                              _popularTagsMap(),
+                                                                              _popularTagsVector() {
+    this->deepCopyPopularTags(rhs._popularTagsVector);
+}
+
+GenreRecommenderUser& GenreRecommenderUser::operator=(const GenreRecommenderUser& rhs) {
+    if(this != &rhs) {
+        this->cleanPopularTags(true);
+        this->deepCopyPopularTags(rhs._popularTagsVector);
+    }
+    return *this;
+}
+
+GenreRecommenderUser::GenreRecommenderUser(GenreRecommenderUser&& rhs) : User(rhs),
+                                                                _popularTagsMap(rhs._popularTagsMap),
+                                                                _popularTagsVector(rhs._popularTagsVector) {}
+
+GenreRecommenderUser& GenreRecommenderUser::operator=(GenreRecommenderUser&& rhs) {
+    if(this != &rhs) {
+        this->cleanPopularTags(true);
+        _popularTagsMap = rhs._popularTagsMap;
+        _popularTagsVector = rhs._popularTagsVector;
+        rhs.cleanPopularTags(false);
+    }
+    return *this;
+}
 
 User* GenreRecommenderUser::clone() const{
     return new GenreRecommenderUser(*this);
@@ -112,14 +160,15 @@ void GenreRecommenderUser::updatePopularTags() {
     for (auto iter = lastWatchedTags.begin(); iter != lastWatchedTags.end(); iter++) {
         // if tag doesn't exists in the map, add it
         if (!_popularTagsMap.count(*iter)) {
-            _popularTagsVector.push_back(PopularTag(*iter));
-            _popularTagsMap[*iter] = &(_popularTagsVector.back());
+            _popularTagsVector.push_back(new PopularTag(*iter));
+            _popularTagsMap[*iter] = _popularTagsVector.back();
         }
         else {
             _popularTagsMap[*iter]->increaseCount();
         }
         // sorts by PopularTag's operator<()
-        std::sort(_popularTagsVector.begin(), _popularTagsVector.end());
+        std::sort(_popularTagsVector.begin(), _popularTagsVector.end(),
+                  [](PopularTag* a, PopularTag* b) { return *a < *b; });
     }
 }
 
@@ -133,7 +182,7 @@ void GenreRecommenderUser::addToHistory(Watchable& watchable) {
 Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
     std::vector<Watchable*> content = s.getContent();
     std::vector<Watchable*>::iterator contentIter;
-    std::vector<PopularTag>::iterator popularTagsIter;
+    std::vector<PopularTag*>::iterator popularTagsIter;
     // iterate over all user's popular tags, from most to least popular.
     for (popularTagsIter = _popularTagsVector.begin(); popularTagsIter != _popularTagsVector.end();
          popularTagsIter++) {
@@ -144,7 +193,7 @@ Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
                 // extract the Watchable's tags vector.
                 const std::vector<std::string> &watchableTags = (*contentIter)->getTags();
                 // check if popular tag exist in Watchable's tags vector
-                if (std::find(watchableTags.begin(), watchableTags.end(), popularTagsIter->getName())
+                if (std::find(watchableTags.begin(), watchableTags.end(), (*popularTagsIter)->getName())
                     != watchableTags.end()) {
                     return *contentIter;
                 }
