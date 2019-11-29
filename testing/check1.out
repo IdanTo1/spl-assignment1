@@ -1,4 +1,3 @@
-# run with two argv's
 1. The Shawshank Redemption 142 minutes [Drama]
 2. The Godfather 175 minutes [Drama, Crime]
 3. The Dark Knight 152 minutes [Action, Crime, Drama, Thriller]
@@ -558,6 +557,8 @@ PrintContentList COMPLETED
 274. How I Met Your Mother S10E22 22 minutes [Comedy, Romantic]
 275. How I Met Your Mother S10E23 22 minutes [Comedy, Romantic]
 276. How I Met Your Mother S10E24 22 minutes [Comedy, Romantic]
+PrintContentList COMPLETED
+Exit COMPLETED
 PrintActionsLog COMPLETED
 ChangeUser COMPLETED
 Watch COMPLETED
@@ -842,7 +843,13 @@ Watch history for roy
 274. How I Met Your Mother S10E22 22 minutes [Comedy, Romantic]
 275. How I Met Your Mother S10E23 22 minutes [Comedy, Romantic]
 276. How I Met Your Mother S10E24 22 minutes [Comedy, Romantic]
+PrintContentList COMPLETED
+Exit COMPLETED
+PrintWatchHistory COMPLETED
+ChangeUser COMPLETED
 PrintActionsLog COMPLETED
+PrintContentList COMPLETED
+Exit COMPLETED
 PrintActionsLog COMPLETED
 ChangeUser COMPLETED
 Watch COMPLETED
@@ -1155,3 +1162,4 @@ Watch history for roy
 26. Blue Planet II S1E6 45 minutes [Documentary, Sea]
 27. Blue Planet II S1E7 45 minutes [Documentary, Sea]
 28. Blue Planet II S1E8 45 minutes [Documentary, Sea]
+Watch history for default
