@@ -1,3 +1,4 @@
+make debug
 #./bin/splflix testing/config1.json < testing/check1.in > testing/results/check1.log
 valgrind --log-file="testing/results/valgrind2.log" ./bin/splflix testing/testLen1.json < testing/check2.in > testing/results/check2.log
 valgrind --log-file="testing/results/valgrind3.log" ./bin/splflix testing/testLen1.json < testing/check3.in > testing/results/check3.log
