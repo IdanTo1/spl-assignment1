@@ -1,5 +1,4 @@
-make debug
-#./bin/splflix testing/config1.json < testing/check1.in > testing/results/check1.log
+# check1 will run from makefile because it has a different main file.
 valgrind --log-file="testing/results/valgrind2.log" ./bin/splflix testing/testLen1.json < testing/check2.in > testing/results/check2.log
 valgrind --log-file="testing/results/valgrind3.log" ./bin/splflix testing/testLen1.json < testing/check3.in > testing/results/check3.log
 valgrind --log-file="testing/results/valgrind4.log" ./bin/splflix testing/testLen2.json < testing/check4.in > testing/results/check4.log
@@ -11,15 +10,15 @@ valgrind --log-file="testing/results/valgrind9.log" ./bin/splflix testing/testEp
 valgrind --log-file="testing/results/valgrind10.log" ./bin/splflix testing/config1.json < testing/check10.in > testing/results/check10.log
 valgrind --log-file="testing/results/valgrind11.log" ./bin/splflix testing/config1.json < testing/check11.in > testing/results/check11.log
 echo diffing files
-#diff testing/check1.out testing/results/check1.log
+diff testing/check1.out testing/results/check1.log
 diff testing/check2.out testing/results/check2.log
 diff testing/check3.out testing/results/check3.log
 diff testing/check4.out testing/results/check4.log
-#diff testing/check5.out testing/results/check5.log
-#diff testing/check6.out testing/results/check6.log
-#diff testing/check7.out testing/results/check7.log
+diff testing/check5.out testing/results/check5.log
+diff testing/check6.out testing/results/check6.log
+diff testing/check7.out testing/results/check7.log
 diff testing/check8.out testing/results/check8.log
 diff testing/check9.out testing/results/check9.log
 diff testing/check10.out testing/results/check10.log
 diff testing/check11.out testing/results/check11.log
-echo finished
+echo finished diffing files
