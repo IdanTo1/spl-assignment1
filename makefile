@@ -46,7 +46,7 @@ test:
 	make debug
 	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/Main.o testing/check1_main.cpp
 	$(CC) -o bin/splflix bin/Session.o bin/Watchable.o bin/User.o bin/PopularTag.o bin/Action.o bin/Main.o $(LFLAGS)
-	./bin/splflix testing/config1.json testing/config2.json < testing/check1.in > testing/results/check1.log
+	valgrind --log-file="testing/results/valgrind1.log" ./bin/splflix testing/config1.json testing/config2.json < testing/check1.in > testing/results/check1.log
 	make debug
 	./testing/test_Script.sh
 #Clean the build directory
