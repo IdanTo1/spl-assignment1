@@ -166,10 +166,11 @@ void GenreRecommenderUser::updatePopularTags() {
         else {
             _popularTagsMap[*iter]->increaseCount();
         }
-        // sorts by PopularTag's operator<()
-        std::sort(_popularTagsVector.begin(), _popularTagsVector.end(),
-                  [](PopularTag* a, PopularTag* b) { return *a < *b; });
     }
+    // sorts by PopularTag's operator<()
+    // we'll sort only once to save compare operations.
+    std::sort(_popularTagsVector.begin(), _popularTagsVector.end(),
+              [](PopularTag* a, PopularTag* b) { return *a < *b; });
 }
 
 
