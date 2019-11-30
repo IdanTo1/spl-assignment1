@@ -11,7 +11,7 @@ enum ActionStatus{
 	PENDING, COMPLETED, ERROR
 };
 
-const std::string USER_EXISTS_ERR = " the new user name is already taken";
+const std::string USER_EXISTS_ERR = "the new user name is already taken";
 const std::string INVALID_ALG_ERR = "recommendation algorithm is invalid";
 const std::string USER_DOESNT_EXISTS_ERR = "username does not exist";
 
