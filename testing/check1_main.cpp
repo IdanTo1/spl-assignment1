@@ -21,8 +21,11 @@ int main(int argc, char** argv){
 	Session* s4 = new Session(Session(argv[1]));
 	s4->start();
 	Session* s5 = s4;
-	s4 = new Session(*(new Session(argv[2])));
+	delete s5;
+	s5 = new Session(argv[2]);
+	s4 = new Session(*(s5));
 	delete s5;
 	s4->start();
+	delete s4;
 	return 0;
 }
