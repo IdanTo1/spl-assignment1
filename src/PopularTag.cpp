@@ -33,8 +33,9 @@ bool PopularTag::operator <(const PopularTag& pt) {
     else if (this->_count > pt._count) {
         return false;
     }
-    //if both tags have same popularity, compare by the classic string opertor<
+    // if both tags have same popularity, compare by the classic string opertor>
+    // that's because we want to sort count from large to small, but name from small to large
     else {
-        return (this->_name < pt._name);
+        return (this->_name > pt._name);
     }
 }
