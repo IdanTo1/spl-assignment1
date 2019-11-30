@@ -1,5 +1,6 @@
 #include "../include/Session.h"
 
+
 BaseAction::BaseAction() : errorMsg(""), status(PENDING) {}
 
 BaseAction::~BaseAction() {}
@@ -10,14 +11,14 @@ ActionStatus BaseAction::getStatus() const {
 
 const std::string BaseAction::getStatusString() const {
     switch (status) {
-    case PENDING:
-       return "PENDING";
-    case COMPLETED:
-        return "COMPLETED";
-    case ERROR:
-        return "ERROR: "+getErrorMsg();
-    default:
-        return "Impossible";
+        case PENDING:
+            return "PENDING";
+        case COMPLETED:
+            return "COMPLETED";
+        case ERROR:
+            return "ERROR: " + getErrorMsg();
+        default:
+            return "Impossible";
     }
 }
 
@@ -35,14 +36,15 @@ std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
-CreateUser::CreateUser(const std::string& name, const std::string& recommendationAlg): BaseAction(),
+CreateUser::CreateUser(const std::string& name, const std::string& recommendationAlg) : BaseAction(),
                                                                                         _userName(name),
-                                                                    _recommendationAlg(recommendationAlg) {}
+                                                                                        _recommendationAlg(
+                                                                                                recommendationAlg) {}
 
 CreateUser::~CreateUser() {}
 
 void CreateUser::act(Session& sess) {
-    if(sess.getUsers().count(_userName)) {
+    if (sess.getUsers().count(_userName)) {
         error(USER_EXISTS_ERR);
         return;
     }
@@ -61,17 +63,18 @@ void CreateUser::act(Session& sess) {
     }
     complete();
 }
+
 std::string CreateUser::toString() const {
     return ("CreateUser " + getStatusString());
 }
 
-ChangeActiveUser::ChangeActiveUser(const std::string& name): BaseAction(), _newUser(name) {}
+ChangeActiveUser::ChangeActiveUser(const std::string& name) : BaseAction(), _newUser(name) {}
 
 ChangeActiveUser::~ChangeActiveUser() {}
 
-void ChangeActiveUser::act(Session &sess) {
-    const std::unordered_map<std::string,User*>& usersMap = sess.getUsers();
-    if(!usersMap.count(_newUser)) {
+void ChangeActiveUser::act(Session& sess) {
+    const std::unordered_map<std::string, User*>& usersMap = sess.getUsers();
+    if (!usersMap.count(_newUser)) {
         error(USER_DOESNT_EXISTS_ERR);
     }
     else {
@@ -84,12 +87,12 @@ std::string ChangeActiveUser::toString() const {
     return ("ChangeUser " + getStatusString());
 }
 
-DeleteUser::DeleteUser(const std::string& name): BaseAction(), _userName(name) {}
+DeleteUser::DeleteUser(const std::string& name) : BaseAction(), _userName(name) {}
 
 DeleteUser::~DeleteUser() {}
 
-void DeleteUser::act(Session &sess) {
-    if(!sess.getUsers().count(_userName)) {
+void DeleteUser::act(Session& sess) {
+    if (!sess.getUsers().count(_userName)) {
         error(USER_DOESNT_EXISTS_ERR);
     }
     else {
@@ -102,15 +105,16 @@ std::string DeleteUser::toString() const {
     return ("DeleteUser " + getStatusString());
 }
 
-DuplicateUser::DuplicateUser(const std::string& oldUser, const std::string& newUser): BaseAction(),
-                                                                                      _oldUserName(oldUser),
-                                                                                      _newUserName(newUser){}
+DuplicateUser::DuplicateUser(const std::string& oldUser, const std::string& newUser) : BaseAction(),
+                                                                                       _oldUserName(oldUser),
+                                                                                       _newUserName(
+                                                                                               newUser) {}
 
 DuplicateUser::~DuplicateUser() {}
 
-void DuplicateUser::act(Session &sess) {
-    const std::unordered_map<std::string,User*>& usersMap = sess.getUsers();
-    if(!usersMap.count(_oldUserName)) {
+void DuplicateUser::act(Session& sess) {
+    const std::unordered_map<std::string, User*>& usersMap = sess.getUsers();
+    if (!usersMap.count(_oldUserName)) {
         error(USER_DOESNT_EXISTS_ERR);
     }
     else if (usersMap.count(_newUserName)) {
@@ -134,10 +138,9 @@ PrintContentList::~PrintContentList() {}
 
 void PrintContentList::act(Session& sess) {
     const std::vector<Watchable*>& content = sess.getContent();
-    for(auto watchable : content)
-    {
+    for (auto watchable : content) {
         // +1 for easier readabillity, where lists start at 1
-        std::cout << std::to_string(watchable->getId()+1) << ". " << watchable->toString() << std::endl;
+        std::cout << std::to_string(watchable->getId() + 1) << ". " << watchable->toString() << std::endl;
     }
     complete();
 }
@@ -152,8 +155,7 @@ void PrintWatchHistory::act(Session& sess) {
     std::cout << "Watch history for " << sess.getActiveUser().getName() << std::endl;
     const std::vector<Watchable*> history = sess.getActiveUser().get_history();
     int i = 1; // 1 for easier readabillity, where lists start at 1
-    for(auto watchable: history)
-    {
+    for (auto watchable: history) {
         std::cout << std::to_string(i) << ". " << watchable->toStringName() << std::endl;
         i++;
     }
@@ -164,9 +166,9 @@ std::string PrintWatchHistory::toString() const {
     return "PrintWatchHistory " + getStatusString();
 }
 
-Watch::Watch(Watchable& toWatch): BaseAction(),
-                                 _toWatch(toWatch),
-                                  _nextWatchableId(-1) {}
+Watch::Watch(Watchable& toWatch) : BaseAction(),
+                                   _toWatch(toWatch),
+                                   _nextWatchableId(-1) {}
 
 Watch::~Watch() {}
 
@@ -179,42 +181,41 @@ void Watch::act(Session& sess) {
     /* If the Watchable returns a nullptr as the next in order then we ask
      the user object for recommendation
      */
-    if(nextWatchable == nullptr){
+    if (nextWatchable == nullptr) {
         nextWatchable = activeUser.getRecommendation(sess);
     }
-    if(nextWatchable == nullptr) {
+    if (nextWatchable == nullptr) {
         return;
     }
-    else{
+    else {
         std::cout << "We recommend watching " << nextWatchable->toStringName() <<
-                                                 ", continue watching? [y/n]" << std::endl;
+                  ", continue watching? [y/n]" << std::endl;
         _nextWatchableId = nextWatchable->getId();
     }
 }
 
-long Watch::getNextWatchableId() const
-{
+long Watch::getNextWatchableId() const {
     return _nextWatchableId;
 }
 
 std::string Watch::toString() const {
-    return "Watch "+getStatusString();
+    return "Watch " + getStatusString();
 }
 
-PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog): BaseAction(),
-                                                                              _actionsLog(actionsLog) {}
+PrintActionsLog::PrintActionsLog(const std::vector<BaseAction*>& actionsLog) : BaseAction(),
+                                                                               _actionsLog(actionsLog) {}
 
 PrintActionsLog::~PrintActionsLog() {}
 
 void PrintActionsLog::act(Session& s) {
-    for (auto i = _actionsLog.rbegin(); i != _actionsLog.rend(); ++i ) {
-            std::cout << (*i)->toString() << std::endl;
+    for (auto i = _actionsLog.rbegin(); i != _actionsLog.rend(); ++i) {
+        std::cout << (*i)->toString() << std::endl;
     }
     complete();
 }
 
 std::string PrintActionsLog::toString() const {
-    return "PrintActionsLog "+getStatusString();
+    return "PrintActionsLog " + getStatusString();
 }
 
 Exit::~Exit() {}
@@ -224,52 +225,43 @@ void Exit::act(Session& sess) {
 }
 
 std::string Exit::toString() const {
-    return "Exit "+getStatusString();
+    return "Exit " + getStatusString();
 }
 
 // Clones for polymorphic copying
 
-BaseAction* CreateUser::clone() const
-{
+BaseAction* CreateUser::clone() const {
     return new CreateUser(*this);
 }
 
-BaseAction* ChangeActiveUser::clone() const
-{
+BaseAction* ChangeActiveUser::clone() const {
     return new ChangeActiveUser(*this);
 }
 
-BaseAction* DeleteUser::clone() const
-{
+BaseAction* DeleteUser::clone() const {
     return new DeleteUser(*this);
 }
 
-BaseAction* DuplicateUser::clone() const
-{
+BaseAction* DuplicateUser::clone() const {
     return new DuplicateUser(*this);
 }
 
-BaseAction* PrintContentList::clone() const
-{
+BaseAction* PrintContentList::clone() const {
     return new PrintContentList(*this);
 }
 
-BaseAction* PrintWatchHistory::clone() const
-{
+BaseAction* PrintWatchHistory::clone() const {
     return new PrintWatchHistory(*this);
 }
 
-BaseAction* Watch::clone() const
-{
+BaseAction* Watch::clone() const {
     return new Watch(*this);
 }
 
-BaseAction* PrintActionsLog::clone() const
-{
+BaseAction* PrintActionsLog::clone() const {
     return new PrintActionsLog(*this);
 }
 
-BaseAction* Exit::clone() const
-{
+BaseAction* Exit::clone() const {
     return new Exit(*this);
 }

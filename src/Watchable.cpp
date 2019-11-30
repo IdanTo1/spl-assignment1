@@ -3,58 +3,51 @@
 
 Watchable::Watchable(long id, int length,
                      const std::vector<std::string>& tags)
-: id(id), length(length), tags(tags){}
+        : id(id), length(length), tags(tags) {}
 
 Watchable::~Watchable() {}
 
 // auxillary to avoid code duplication
-const std::string Watchable::getTagsString() const
-{
+const std::string Watchable::getTagsString() const {
     std::string totalString = "[";
-    for(auto tag = tags.begin(); tag!=tags.end(); tag++)
-    {
-        if(tag == tags.end()-1)
+    for (auto tag = tags.begin(); tag != tags.end(); tag++) {
+        if (tag == tags.end() - 1) {
             totalString += *tag;
-        else totalString += (*tag)+", ";
+        }
+        else { totalString += (*tag) + ", "; }
     }
-    return totalString+"]";
+    return totalString + "]";
 }
 
-const std::vector<std::string>& Watchable::getTags() const
-{
+const std::vector<std::string>& Watchable::getTags() const {
     return this->tags;
 }
 
-int Watchable::getLength() const
-{
+int Watchable::getLength() const {
     return length;
 }
 
-int Watchable::getId() const
-{
+int Watchable::getId() const {
     return id;
 }
 
 Movie::Movie(long id, const std::string& name, int length,
              const std::vector<std::string>& tags)
-: Watchable(id, length, tags), name(name)
-{}
+        : Watchable(id, length, tags), name(name) {}
 
 Movie::~Movie() {}
 
-Watchable* Movie::getNextWatchable(Session& s) const
-{
-  return nullptr;
+Watchable* Movie::getNextWatchable(Session& s) const {
+    return nullptr;
 }
 
-std::string Movie::toStringName() const
-{
+std::string Movie::toStringName() const {
     // According to the "Inglorious Basterds 153 minutes" format
     return name;
 }
 
 std::string Movie::toString() const {
-    return toStringName() + " " + std::to_string(getLength())+" minutes " + getTagsString();
+    return toStringName() + " " + std::to_string(getLength()) + " minutes " + getTagsString();
 }
 
 /* A second constructor for Episode is implemented with an extra paramter.
@@ -62,25 +55,22 @@ std::string Movie::toString() const {
     implementing the entire thing again
 */
 Episode::Episode(long id, const std::string& seriesName, int length, int season,
-                 int episode, const std::vector<std::string>& tags):
-                 Episode(id, seriesName, length, season, episode, id+1, tags)
-{}
+                 int episode, const std::vector<std::string>& tags) :
+        Episode(id, seriesName, length, season, episode, id + 1, tags) {}
 
 Episode::~Episode() {}
 
-std::string Episode::toStringName() const
-{
+std::string Episode::toStringName() const {
     // According to the "Game of Thrones S01E02 56 minutes" format
-    return seriesName+" S"+std::to_string(season)+"E"+std::to_string(episode);
+    return seriesName + " S" + std::to_string(season) + "E" + std::to_string(episode);
 }
 
 std::string Episode::toString() const {
-    return toStringName() + " "+std::to_string(getLength())+" minutes " + getTagsString();
+    return toStringName() + " " + std::to_string(getLength()) + " minutes " + getTagsString();
 }
 
-Watchable* Episode::getNextWatchable(Session& s) const
-{
-    if(nextEpisodeId == 0) //If there isn't a next episode return nullptr
+Watchable* Episode::getNextWatchable(Session& s) const {
+    if (nextEpisodeId == 0) //If there isn't a next episode return nullptr
     {
         return nullptr;
     }
@@ -89,18 +79,15 @@ Watchable* Episode::getNextWatchable(Session& s) const
     return content[nextEpisodeId];
 }
 
-Episode::Episode(long id, const std::string& seriesName,int length, int season,
+Episode::Episode(long id, const std::string& seriesName, int length, int season,
                  int episode, int nextEpisodeId, const std::vector<std::string>& tags)
-:  Watchable(id, length, tags), seriesName(seriesName), season(season),
-     episode(episode), nextEpisodeId(nextEpisodeId)
-{}
+        : Watchable(id, length, tags), seriesName(seriesName), season(season),
+          episode(episode), nextEpisodeId(nextEpisodeId) {}
 
-Watchable* Episode::clone() const
-{
+Watchable* Episode::clone() const {
     return new Episode(*this);
 }
 
-Watchable* Movie::clone() const
-{
+Watchable* Movie::clone() const {
     return new Movie(*this);
 }
