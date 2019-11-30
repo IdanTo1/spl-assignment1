@@ -1,0 +1,9 @@
+changeuser idan
+createuser idan ren
+createuser idan len
+createuser idan gen
+deleteuser roy
+dupuser roy moshe
+dupuser idan default
+log
+exit
