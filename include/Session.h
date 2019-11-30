@@ -13,9 +13,10 @@
 
 
 class User;
+
 class Watchable;
 
-enum ActionStringsEnum{
+enum ActionStringsEnum {
     CREATE_USER,
     CHANGE_USER,
     DELETE_USER,
@@ -31,38 +32,39 @@ const std::string ACTION_PARAMS_DELIMITER = " ";
 const std::string CONTINUE = "y";
 const long NOTHING_TO_RECOMMEND = -1;
 
-class Session{
-public:
-    Session(const std::string &configFilePath);
-    ~Session();
-    void start();
+class Session {
+    public:
+        Session(const std::string& configFilePath);
+        ~Session();
+        void start();
 
-    void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
-    ActionStringsEnum strToEnum(const std::string& actionString);
-    const std::vector<Watchable*>& getContent() const;
-    User& getActiveUser();
-    void setActiveUser(User&);
-    Session(const Session& rhs);
-    Session& operator=(const Session& rhs);
-    Session(Session&& rhs);
-    Session& operator=(Session&& rhs);
-    void addToUserMap(User* user);
-    void deleteUserFromMap(const std::string& name);
-    const std::unordered_map<std::string,User*>& getUsers() const;
-private:
-    std::vector<Watchable*> content;
-    std::vector<BaseAction*> actionsLog;
-    std::unordered_map<std::string,User*> userMap;
-    User* activeUser;
+        void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
+        ActionStringsEnum strToEnum(const std::string& actionString);
+        const std::vector<Watchable*>& getContent() const;
+        User& getActiveUser();
+        void setActiveUser(User&);
+        Session(const Session& rhs);
+        Session& operator=(const Session& rhs);
+        Session(Session&& rhs);
+        Session& operator=(Session&& rhs);
+        void addToUserMap(User* user);
+        void deleteUserFromMap(const std::string& name);
+        const std::unordered_map<std::string, User*>& getUsers() const;
+    private:
+        std::vector<Watchable*> content;
+        std::vector<BaseAction*> actionsLog;
+        std::unordered_map<std::string, User*> userMap;
+        User* activeUser;
 
-    std::vector<std::string> extractTags(nlohmann::json& tagList);
-    void fillContentFromJson(const std::string &configFilePath);
-    void clean();
-    void cleanUserMap();
-    template <typename T>
-    void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
-    void deepCopyUsers(const std::unordered_map<std::string, User*>& other);
-    template <typename T>
-    void cleanIterable(T* toDelete);
+        std::vector<std::string> extractTags(nlohmann::json& tagList);
+        void fillContentFromJson(const std::string& configFilePath);
+        void clean();
+        void cleanUserMap();
+        template<typename T>
+        void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
+        void deepCopyUsers(const std::unordered_map<std::string, User*>& other);
+        template<typename T>
+        void cleanIterable(T* toDelete);
 };
+
 #endif
