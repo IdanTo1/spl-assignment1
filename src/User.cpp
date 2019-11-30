@@ -1,7 +1,8 @@
 #include "../include/Session.h"
 
+
 // User's related methods implementation.
-User::User(const std::string& name): history(), name(name) {}
+User::User(const std::string& name) : history(), name(name) {}
 
 User::~User() {}
 
@@ -25,22 +26,21 @@ void User::setName(const std::string& newName) {
     name = newName;
 }
 
-void User::fixHistory(std::vector<Watchable*>& content)
-{
+void User::fixHistory(std::vector<Watchable*>& content) {
     int index = 0;
-    for(auto w : history)
-    {
+    for (auto w : history) {
         history[index] = content[w->getId()];
         index++;
     }
 }
 
 // Length Recommender User's methods implementation.
-LengthRecommenderUser::LengthRecommenderUser(const std::string& name): User(name), _avgWatchableLen(0.0f) {}
+LengthRecommenderUser::LengthRecommenderUser(const std::string& name) : User(name), _avgWatchableLen(0.0f) {}
 
 User* LengthRecommenderUser::clone() const {
     return new LengthRecommenderUser(*this);
 }
+
 LengthRecommenderUser::~LengthRecommenderUser() {}
 
 void LengthRecommenderUser::updateAverage() {
@@ -65,9 +65,8 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
     Watchable* recommendedWatchable = nullptr;
     //iterate over all content vector, and compare it to min diff found
     float curDiff;
-    for (auto iter = content.begin(); iter != content.end(); iter++)
-    {
-        curDiff =  abs((*iter)->getLength() - _avgWatchableLen);
+    for (auto iter = content.begin(); iter != content.end(); iter++) {
+        curDiff = abs((*iter)->getLength() - _avgWatchableLen);
         if (curDiff < minDiff && !isInHistory(**iter)) {
             recommendedWatchable = *iter;
             minDiff = curDiff;
@@ -77,45 +76,46 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 }
 
 // Rerun Recommender User's methods implementation.
-RerunRecommenderUser::RerunRecommenderUser(const std::string& name):
+RerunRecommenderUser::RerunRecommenderUser(const std::string& name) :
         User(name), _lastRecIdx(-1) {}
 
 RerunRecommenderUser::~RerunRecommenderUser() {}
 
-User* RerunRecommenderUser::clone() const{
+User* RerunRecommenderUser::clone() const {
     return new RerunRecommenderUser(*this);
 }
 
 Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
     if (_lastRecIdx == -1) {
-        _lastRecIdx ++;
+        _lastRecIdx++;
         return *(history.begin());
     }
-    _lastRecIdx = (_lastRecIdx+1) % history.size();
+    _lastRecIdx = (_lastRecIdx + 1) % history.size();
     return history[_lastRecIdx];
 }
 
 
 // Genre Recommender User's methods implementation.
-GenreRecommenderUser::GenreRecommenderUser(const std::string& name): User(name), _popularTagsMap(),
-                                                                     _popularTagsVector() {}
+GenreRecommenderUser::GenreRecommenderUser(const std::string& name) : User(name), _popularTagsMap(),
+                                                                      _popularTagsVector() {}
 
 GenreRecommenderUser::~GenreRecommenderUser() {
     this->cleanPopularTags(true);
 }
 
 void GenreRecommenderUser::cleanPopularTags(bool isDeepClean) {
-    for(uint i = 0; i < _popularTagsVector.size(); i++) {
+    for (uint i = 0; i < _popularTagsVector.size(); i++) {
         PopularTag* tag = _popularTagsVector[i];
         _popularTagsMap[tag->getName()] = nullptr;
         _popularTagsVector[i] = nullptr;
-        if(isDeepClean)
+        if (isDeepClean) {
             delete tag;
+        }
     }
 }
 
 void GenreRecommenderUser::deepCopyPopularTags(const std::vector<PopularTag*>& tags) {
-    for(auto tag : tags) {
+    for (auto tag : tags) {
         PopularTag* newTag = new PopularTag(*tag);
         _popularTagsVector.push_back(newTag);
         _popularTagsMap[newTag->getName()] = newTag;
@@ -129,7 +129,7 @@ GenreRecommenderUser::GenreRecommenderUser(const GenreRecommenderUser& rhs) : Us
 }
 
 GenreRecommenderUser& GenreRecommenderUser::operator=(const GenreRecommenderUser& rhs) {
-    if(this != &rhs) {
+    if (this != &rhs) {
         this->cleanPopularTags(true);
         this->deepCopyPopularTags(rhs._popularTagsVector);
     }
@@ -137,11 +137,12 @@ GenreRecommenderUser& GenreRecommenderUser::operator=(const GenreRecommenderUser
 }
 
 GenreRecommenderUser::GenreRecommenderUser(GenreRecommenderUser&& rhs) : User(rhs),
-                                                                _popularTagsMap(rhs._popularTagsMap),
-                                                                _popularTagsVector(rhs._popularTagsVector) {}
+                                                                         _popularTagsMap(rhs._popularTagsMap),
+                                                                         _popularTagsVector(
+                                                                                 rhs._popularTagsVector) {}
 
 GenreRecommenderUser& GenreRecommenderUser::operator=(GenreRecommenderUser&& rhs) {
-    if(this != &rhs) {
+    if (this != &rhs) {
         this->cleanPopularTags(true);
         _popularTagsMap = rhs._popularTagsMap;
         _popularTagsVector = rhs._popularTagsVector;
@@ -150,7 +151,7 @@ GenreRecommenderUser& GenreRecommenderUser::operator=(GenreRecommenderUser&& rhs
     return *this;
 }
 
-User* GenreRecommenderUser::clone() const{
+User* GenreRecommenderUser::clone() const {
     return new GenreRecommenderUser(*this);
 }
 
@@ -180,7 +181,7 @@ void GenreRecommenderUser::addToHistory(Watchable& watchable) {
     updatePopularTags();
 }
 
-Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
+Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
     std::vector<Watchable*> content = s.getContent();
     std::vector<Watchable*>::iterator contentIter;
     std::vector<PopularTag*>::reverse_iterator popularTagsIter;
@@ -194,7 +195,7 @@ Watchable* GenreRecommenderUser::getRecommendation(Session &s) {
             // check that the watchable wasn't seen already
             if (!isInHistory(**contentIter)) {
                 // extract the Watchable's tags vector.
-                const std::vector<std::string> &watchableTags = (*contentIter)->getTags();
+                const std::vector<std::string>& watchableTags = (*contentIter)->getTags();
                 // check if popular tag exist in Watchable's tags vector
                 if (std::find(watchableTags.begin(), watchableTags.end(), (*popularTagsIter)->getName())
                     != watchableTags.end()) {

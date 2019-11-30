@@ -7,6 +7,7 @@
 
 #include <string>
 
+
 class PopularTag {
     public:
         PopularTag();
@@ -17,7 +18,7 @@ class PopularTag {
         int getCount() const;
         void increaseCount();
         // overloaded < operator
-        bool operator <(const PopularTag&);
+        bool operator<(const PopularTag&);
     private:
         std::string _name;
         int _count;
