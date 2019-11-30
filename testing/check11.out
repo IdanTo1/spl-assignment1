@@ -1,6 +1,12 @@
-ERROR - the new user name is already taken
 ERROR - username does not exist
-ERROR - username does not exist
-ERROR - the new user name is already taken
 ERROR - recommendation algorithm is invalid
+ERROR - the new user name is already taken
 ERROR - username does not exist
+ERROR - username does not exist
+ERROR - the new user name is already taken
+DuplicateUser ERROR: the new user name is already taken
+DuplicateUser ERROR: username does not exist
+DeleteUser ERROR: username does not exist
+CreateUser ERROR: the new user name is already taken
+CreateUser ERROR: recommendation algorithm is invalid
+ChangeUser ERROR: username does not exist
