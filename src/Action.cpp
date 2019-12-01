@@ -16,7 +16,7 @@ const std::string BaseAction::getStatusString() const {
         case COMPLETED:
             return "COMPLETED";
         case ERROR:
-            return "ERROR: " + getErrorMsg();
+            return "error: " + getErrorMsg();
         default:
             return "Impossible";
     }
@@ -29,7 +29,7 @@ void BaseAction::complete() {
 void BaseAction::error(const std::string& errorMsg) {
     this->errorMsg = errorMsg;
     status = ERROR;
-    std::cout << "ERROR - " << errorMsg << std::endl;
+    std::cout << "Error - " << errorMsg << std::endl;
 }
 
 std::string BaseAction::getErrorMsg() const {
