@@ -9,7 +9,7 @@
 #include "User.h"
 #include "Watchable.h"
 #include "PopularTag.h"
-#include "../include/json.hpp"
+#include "json.hpp"
 
 
 class User;
@@ -34,19 +34,21 @@ const long NOTHING_TO_RECOMMEND = -1;
 
 class Session {
     public:
+        // Rule of 5 - constructors and destructor.
         Session(const std::string& configFilePath);
         ~Session();
-        void start();
+        Session(const Session& rhs);
+        Session& operator=(const Session& rhs);
+        Session(Session&& rhs);
+        Session& operator=(Session&& rhs);
 
+        void start();
+        // splits a string according to delimiter, and inserts sub strings to the vector.
         void split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter);
         ActionStringsEnum strToEnum(const std::string& actionString);
         const std::vector<Watchable*>& getContent() const;
         User& getActiveUser();
         void setActiveUser(User&);
-        Session(const Session& rhs);
-        Session& operator=(const Session& rhs);
-        Session(Session&& rhs);
-        Session& operator=(Session&& rhs);
         void addToUserMap(User* user);
         void deleteUserFromMap(const std::string& name);
         const std::unordered_map<std::string, User*>& getUsers() const;
@@ -58,13 +60,13 @@ class Session {
 
         std::vector<std::string> extractTags(nlohmann::json& tagList);
         void fillContentFromJson(const std::string& configFilePath);
-        void clean();
-        void cleanUserMap();
         template<typename T>
         void deepCopyPointerVector(const std::vector<T*>& newV, std::vector<T*>& ourV);
         void deepCopyUsers(const std::unordered_map<std::string, User*>& other);
         template<typename T>
         void cleanIterable(T* toDelete);
+        void cleanUserMap();
+        void clean();
 };
 
 #endif

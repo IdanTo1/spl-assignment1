@@ -1,7 +1,6 @@
 # args
 CC = g++
 CFLAGS  = -g -Wall -Weffc++ -std=c++11
-DBGFLAGS = -g -std=c++11 -o0
 LFLAGS  = -L/usr/lib
 
 # All Targets
@@ -30,16 +29,6 @@ bin/Action.o: include/Action.h src/Action.cpp
 
 bin/PopularTag.o: include/PopularTag.h src/PopularTag.cpp
 	$(CC) $(CFLAGS) -c -Iinclude -o bin/PopularTag.o src/PopularTag.cpp
-
-debug: include/PopularTag.h src/PopularTag.cpp include/Action.h src/Action.cpp include/User.h src/User.cpp \
-        include/Watchable.h src/Watchable.cpp include/Session.h src/Session.cpp src/Main.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/PopularTag.o src/PopularTag.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/Action.o src/Action.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/User.o src/User.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/Watchable.o src/Watchable.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/Session.o src/Session.cpp
-	$(CC) $(DBGFLAGS) -c -Iinclude -o bin/Main.o src/Main.cpp
-	$(CC) -o bin/splflix bin/Session.o bin/Watchable.o bin/User.o bin/PopularTag.o bin/Action.o bin/Main.o $(LFLAGS)
 
 #Clean the build directory
 .PHONY: all clean debug

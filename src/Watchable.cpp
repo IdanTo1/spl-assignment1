@@ -1,13 +1,12 @@
 #include "../include/Session.h"
 
 
-Watchable::Watchable(long id, int length,
-                     const std::vector<std::string>& tags)
-        : id(id), length(length), tags(tags) {}
+Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) :
+        id(id), length(length), tags(tags) {}
 
 Watchable::~Watchable() {}
 
-// auxillary to avoid code duplication
+// auxiliary to avoid code duplication
 const std::string Watchable::getTagsString() const {
     std::string totalString = "[";
     for (auto tag = tags.begin(); tag != tags.end(); tag++) {
@@ -31,9 +30,8 @@ int Watchable::getId() const {
     return id;
 }
 
-Movie::Movie(long id, const std::string& name, int length,
-             const std::vector<std::string>& tags)
-        : Watchable(id, length, tags), name(name) {}
+Movie::Movie(long id, const std::string& name, int length, const std::vector<std::string>& tags) :
+        Watchable(id, length, tags), name(name) {}
 
 Movie::~Movie() {}
 
@@ -54,8 +52,8 @@ std::string Movie::toString() const {
     The latter is stronger and can be called here instead of
     implementing the entire thing again
 */
-Episode::Episode(long id, const std::string& seriesName, int length, int season,
-                 int episode, const std::vector<std::string>& tags) :
+Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode,
+                 const std::vector<std::string>& tags) :
         Episode(id, seriesName, length, season, episode, id + 1, tags) {}
 
 Episode::~Episode() {}
@@ -79,10 +77,10 @@ Watchable* Episode::getNextWatchable(Session& s) const {
     return content[nextEpisodeId];
 }
 
-Episode::Episode(long id, const std::string& seriesName, int length, int season,
-                 int episode, int nextEpisodeId, const std::vector<std::string>& tags)
-        : Watchable(id, length, tags), seriesName(seriesName), season(season),
-          episode(episode), nextEpisodeId(nextEpisodeId) {}
+Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode,
+                 int nextEpisodeId, const std::vector<std::string>& tags) :
+                    Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode),
+                    nextEpisodeId(nextEpisodeId) {}
 
 Watchable* Episode::clone() const {
     return new Episode(*this);
