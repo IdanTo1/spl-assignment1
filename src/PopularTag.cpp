@@ -27,7 +27,7 @@ void PopularTag::increaseCount() {
 
 // overloaded < operator
 bool PopularTag::operator<(const PopularTag& pt) {
-    // check if pt is more popular, has bigger count (meaning User has more Watchables in his hisorty
+    // check if pt is more popular, has bigger count (meaning the user has more Watchables in his history
     // containing this tag)
     if (this->_count < pt._count) {
         return true;
