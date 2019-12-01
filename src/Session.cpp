@@ -17,8 +17,9 @@ Session::~Session() {
     this->clean();
 }
 
-void
-Session::split(std::string& actionString, std::vector<std::string>& actionParams, std::string delimiter) {
+
+void Session::split(std::string& actionString, std::vector<std::string>& actionParams,
+                    std::string delimiter) {
     size_t start = 0U;
     size_t end = actionString.find(delimiter);
     while (end != std::string::npos) {
