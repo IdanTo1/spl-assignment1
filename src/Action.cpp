@@ -15,10 +15,8 @@ const std::string BaseAction::getStatusString() const {
             return "PENDING";
         case COMPLETED:
             return "COMPLETED";
-        case ERROR:
-            return "error: " + getErrorMsg();
-        default:
-            return "Impossible";
+        default: // because status is an enum, no other cases are possible.
+            return "ERROR: " + getErrorMsg();
     }
 }
 

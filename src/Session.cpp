@@ -53,18 +53,21 @@ ActionStringsEnum Session::strToEnum(const std::string &actionString) {
 }
 
 void Session::start() {
+    std::cout << "SPLFLIX is now on!" << std::endl;
     std::string actionString;
     std::vector<std::string> actionParams;
     ActionStringsEnum action;
     do {
+        // receive action from user and parse it.
         std::getline(std::cin, actionString);
         actionParams.clear();
         split(actionString, actionParams, ACTION_PARAMS_DELIMITER);
         action = strToEnum(actionParams[0]);
         BaseAction* actionObj;
+        // according to user request, create action object to perform desired.
         switch (action) {
             case CREATE_USER: {
-                actionObj = new CreateUser(actionParams[1], actionParams[2]); //TODO do we assume valid input?
+                actionObj = new CreateUser(actionParams[1], actionParams[2]);
                 actionsLog.push_back(actionObj);
                 actionObj->act(*this);
                 break;
@@ -105,10 +108,12 @@ void Session::start() {
                 Watch* watchObj = new Watch(*(content[nextId]));
                 actionsLog.push_back(watchObj);
                 watchObj->act(*this);
+                // because implicit Watch may be initialized, inner loop is required.
+                // as long as there is content to recommend on, and the user wish to watch it, keep creating
+                // watch objects.
                 while ((nextId = watchObj->getNextWatchableId()) != NOTHING_TO_RECOMMEND) {
-                    //check for user input, for continue watching.
+                    // check for implicit new watch object (user wishes to continue watching)
                     std::getline(std::cin, continueWatch);
-                    // check for implicit new watch object (user said yes)
                     if (continueWatch != CONTINUE) {
                         break;
                     }
@@ -230,9 +235,7 @@ void Session::clean() {
     cleanUserMap();
 }
 
-Session::Session(const Session& rhs)
-        : content(), actionsLog(), userMap(),
-          activeUser() {
+Session::Session(const Session& rhs) : content(), actionsLog(), userMap(), activeUser() {
     this->deepCopyPointerVector(rhs.content, this->content);
     this->deepCopyPointerVector(rhs.actionsLog, this->actionsLog);
     this->deepCopyUsers(rhs.userMap);
